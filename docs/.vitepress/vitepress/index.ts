@@ -6,7 +6,7 @@ import 'normalize.css'
 import '../../../packages/theme-chalk/src/reset.scss'
 import '../../../packages/theme-chalk/src/index.scss'
 // for dark mode
-import '../../../packages/theme-chalk/src/dark/css-vars.scss'
+// import '../../../packages/theme-chalk/src/dark/css-vars.scss'
 
 import './styles/css-vars.scss'
 import './styles/app.scss'
