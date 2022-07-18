@@ -16,10 +16,6 @@
 }
 
 @include b(select) {
-  @include set-component-css-var('select', $select);
-}
-
-@include b(select) {
   display: inline-block;
   position: relative;
   line-height: map.get($input-height, 'default');
@@ -55,7 +51,7 @@
 
   &:hover:not(.#{$namespace}-select--disabled) {
     .#{$namespace}-input__wrapper {
-      box-shadow: 0 0 0 1px getCssVar('select-border-color-hover') inset;
+      box-shadow: 0 0 0 1px map.get($select, 'border-color-hover') inset;
     }
   }
 
@@ -66,7 +62,7 @@
 
     @include when(focus) {
       @include inset-input-border(
-        getCssVar('select-input-focus-border-color'),
+        map.get($select, 'input-border-color-focus'),
         true
       );
     }
@@ -80,26 +76,30 @@
     display: flex;
 
     & .#{$namespace}-select__caret {
-      color: getCssVar('select-input-color');
-      font-size: getCssVar('select-input-font-size');
+      color: map.get($select, 'input-color');
+      font-size: map.get($select, 'input-font-size');
       transition: transform getCssVar('transition-duration');
       transform: rotateZ(180deg);
       cursor: pointer;
+
+      @include when(arrow) {
+        font-size: map.get($select, 'arrow-font-size');
+      }
 
       @include when(reverse) {
         transform: rotateZ(0deg);
       }
 
       @include when(show-close) {
-        font-size: getCssVar('select-font-size');
+        font-size: map.get($select, 'font-size');
         text-align: center;
         transform: rotateZ(180deg);
         border-radius: getCssVar('border-radius-circle');
-        color: getCssVar('select-input-color');
+        color: map.get($select, 'input-color');
         transition: getCssVar('transition', 'color');
 
         &:hover {
-          color: getCssVar('select-close-hover-color');
+          color: map.get($select, 'close-color-hover');
         }
       }
 
@@ -115,7 +115,9 @@
         cursor: not-allowed;
 
         &:hover {
-          @include inset-input-border(#{getCssVar('select-disabled-border')});
+          @include inset-input-border(
+            map.get($select, 'border-color-disabled')
+          );
         }
       }
       & .#{$namespace}-input__inner {
@@ -128,7 +130,7 @@
 
     &.is-focus .#{$namespace}-input__wrapper {
       @include inset-input-border(
-        getCssVar('select-input-focus-border-color'),
+        map.get($select, 'input-border-color-focus'),
         true
       );
     }
@@ -139,8 +141,8 @@
     outline: none;
     padding: 0;
     margin-left: 15px;
-    color: getCssVar('select-multiple-input-color');
-    font-size: getCssVar('select-font-size');
+    color: map.get($select, 'multiple-input-color');
+    font-size: map.get($select, 'font-size');
     appearance: none;
     height: 28px;
     background-color: transparent;
@@ -152,12 +154,12 @@
     top: 8px;
     z-index: getCssVar('index-top');
     right: 25px;
-    color: getCssVar('select-input-color');
+    color: map.get($select, 'input-color');
     line-height: 18px;
-    font-size: getCssVar('select-input-font-size');
+    font-size: map.get($select, 'input-font-size');
 
     &:hover {
-      color: getCssVar('select-close-hover-color');
+      color: map.get($select, 'close-color-hover');
     }
   }
 
@@ -183,7 +185,10 @@
     .#{$namespace}-tag {
       box-sizing: border-box;
       border-color: transparent;
-      margin: 2px 6px 2px 0;
+      // margin: 2px 6px 2px 0;
+      margin: 2px 0 2px 6px;
+      background: var(--grey-6);
+      color: getCssVar('text-color', 'primary');
       &:last-child {
         margin-right: 0;
       }

@@ -1,10 +1,15 @@
+@use 'sass:map';
+
 @use '../mixins/mixins' as *;
 @use '../common/var' as *;
 
 @include b(time-panel) {
+  border: solid 1px var(--el-color-info-5);
+  background-color: var(--el-color-info-4);
+  box-shadow: var(--el-box-shadow-light);
   border-radius: 2px;
   position: relative;
-  width: 180px;
+  width: 134px;
   left: 0;
   z-index: getCssVar('index-top');
   user-select: none;
@@ -20,14 +25,15 @@
       content: '';
       top: 50%;
       position: absolute;
-      margin-top: -16px;
-      height: 32px;
+      margin-top: -13px;
+      height: 26px;
       z-index: -1;
       left: 0;
       right: 0;
       box-sizing: border-box;
-      padding-top: 6px;
+      // padding-top: 6px;
       text-align: left;
+      background-color: getCssVar('color', 'primary');
     }
 
     &::after {
@@ -56,13 +62,9 @@
   }
 
   @include e(footer) {
-    border-top: 1px solid
-      var(
-        #{getCssVarName('timepicker-inner-border-color')},
-        #{getCssVar('border-color-light')}
-      );
+    border-top: 1px solid map.get($datepicker, 'inner-border-color');
     padding: 4px;
-    height: 36px;
+    height: 34px;
     line-height: 25px;
     text-align: right;
     box-sizing: border-box;
@@ -70,9 +72,9 @@
 
   @include e(btn) {
     border: none;
-    line-height: 28px;
-    padding: 0 5px;
-    margin: 0 5px;
+    line-height: 24px;
+    padding: 0 8px;
+    margin: 0 4px;
     cursor: pointer;
     background-color: transparent;
     outline: none;
@@ -80,11 +82,14 @@
     color: getCssVar('text-color', 'primary');
 
     &.confirm {
-      font-weight: 800;
-      color: var(
-        #{getCssVarName('timepicker-active-color')},
-        #{getCssVar('color-primary')}
-      );
+      // font-weight: 800;
+      // color: var(
+      //   #{getCssVarName('timepicker-active-color')},
+      //   #{getCssVar('color-primary')}
+      // );
+      background-color: getCssVar('color-primary');
+      color: $color-white;
+      border-radius: 2px;
     }
   }
 }

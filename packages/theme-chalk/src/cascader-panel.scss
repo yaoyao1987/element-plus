@@ -1,33 +1,31 @@
+@use 'sass:map';
+
 @use 'mixins/mixins' as *;
 @use 'mixins/var' as *;
 @use 'common/var' as *;
 
 @include b(cascader-panel) {
-  @include set-component-css-var('cascader', $cascader);
-}
-
-@include b(cascader-panel) {
   display: flex;
-  border-radius: getCssVar('cascader-menu', 'radius');
-  font-size: getCssVar('cascader-menu', 'font-size');
+  border-radius: map.get($cascader, 'menu-border-radius');
+  font-size: map.get($cascader, 'menu-font-size');
 
   @include when(bordered) {
-    border: getCssVar('cascader-menu', 'border');
-    border-radius: getCssVar('cascader-menu', 'radius');
+    border: map.get($cascader, 'menu-border');
+    border-radius: map.get($cascader, 'menu-border-radius');
   }
 }
 
 @include b(cascader-menu) {
   min-width: 180px;
   box-sizing: border-box;
-  color: getCssVar('cascader-menu', 'text-color');
-  border-right: getCssVar('cascader-menu', 'border');
+  color: map.get($cascader, 'menu-text-color');
+  border-right: map.get($cascader, 'menu-border');
 
   &:last-child {
     border-right: none;
 
     .#{$namespace}-cascader-node {
-      padding-right: 20px;
+      padding-right: 0;
     }
   }
 
@@ -63,7 +61,7 @@
     transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
-    color: getCssVar('cascader', 'color-empty');
+    color: map.get($cascader, 'empty-text-color');
 
     .is-loading {
       margin-right: 2px;
@@ -75,20 +73,24 @@
   position: relative;
   display: flex;
   align-items: center;
-  padding: 0 30px 0 20px;
-  height: 34px;
-  line-height: 34px;
+  padding: 0 8px;
+  height: 30px;
+  line-height: 30px;
   outline: none;
 
+  &.in-active-path {
+    background-color: map.get($cascader, 'node-bg-color-hover');
+  }
+
   &.is-selectable.in-active-path {
-    color: getCssVar('cascader-menu', 'text-color');
+    color: map.get($cascader, 'menu-text-color');
   }
 
   &.in-active-path,
   &.is-selectable.in-checked-path,
   &.is-active {
-    color: getCssVar('cascader-menu', 'selected-text-color');
-    font-weight: bold;
+    color: map.get($cascader, 'menu-text-color-selected');
+    // font-weight: bold;
   }
 
   &:not(.is-disabled) {
@@ -96,39 +98,57 @@
 
     &:hover,
     &:focus {
-      background: getCssVar('cascader-node', 'background-hover');
+      background: map.get($cascader, 'node-bg-color-hover');
     }
   }
 
   @include when(disabled) {
-    color: getCssVar('cascader-node', 'color-disabled');
+    color: map.get($cascader, 'node-text-color-disabled');
     cursor: not-allowed;
   }
 
   @include e(prefix) {
     position: absolute;
-    left: 10px;
+    left: 8px;
+    font-size: 10px;
+
+    .#{$namespace}-cascader-menu__list
+      .is-active
+      &
+      + .#{$namespace}-cascader-node__label {
+      padding-left: 18px;
+    }
   }
 
   @include e(postfix) {
     position: absolute;
     right: 10px;
+    font-size: 10px;
+
+    &.#{$namespace}-icon-loading {
+      font-size: 16px;
+      color: getCssVar('color', 'primary');
+    }
   }
 
   @include e(label) {
     flex: 1;
     text-align: left;
-    padding: 0 8px;
+    padding: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   > .#{$namespace}-radio {
-    margin-right: 0;
+    margin-right: 8px;
 
     .#{$namespace}-radio__label {
       padding-left: 0;
     }
+  }
+
+  .#{$namespace}-checkbox:last-of-type {
+    margin-right: 8px;
   }
 }

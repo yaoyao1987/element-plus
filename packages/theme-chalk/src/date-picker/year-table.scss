@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use '../mixins/mixins' as *;
 @use '../common/var' as *;
 
@@ -7,12 +9,12 @@
   border-collapse: collapse;
 
   .#{$namespace}-icon {
-    color: getCssVar('datepicker', 'icon-color');
+    color: map.get($datepicker, 'icon-color');
   }
 
   td {
     text-align: center;
-    padding: 20px 3px;
+    padding-top: 16px;
     cursor: pointer;
 
     &.today {
@@ -23,7 +25,7 @@
     }
 
     &.disabled .cell {
-      background-color: getCssVar('fill-color', 'light');
+      background-color: getCssVar('fill-color', '4');
       cursor: not-allowed;
       color: getCssVar('text-color', 'placeholder');
 
@@ -34,26 +36,25 @@
 
     .cell {
       width: 48px;
-      height: 36px;
+      height: 32px;
       display: block;
-      line-height: 36px;
-      color: getCssVar('datepicker-text-color');
-      border-radius: 18px;
+      line-height: 32px;
+      color: map.get($datepicker, 'text-color');
       margin: 0 auto;
 
       &:hover {
-        color: getCssVar('datepicker-hover-text-color');
+        color: map.get($datepicker, 'text-color-hover');
       }
     }
 
     &.current:not(.disabled) .cell {
-      color: getCssVar('datepicker-active-color');
+      color: map.get($datepicker, 'text-color-active');
     }
 
     &:focus-visible {
       outline: none;
       .cell {
-        outline: 2px solid getCssVar('datepicker-active-color');
+        outline: 2px solid map.get($datepicker, 'active-color');
       }
     }
   }

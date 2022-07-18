@@ -5,24 +5,17 @@
 @use 'common/var' as *;
 
 @include b(message) {
-  @include set-component-css-var('message', $message);
-}
-
-@include b(message) {
-  min-width: getCssVar('message', 'min-width');
+  min-width: map.get($message, 'min-width');
   box-sizing: border-box;
   border-radius: getCssVar('border-radius-base');
-  border-width: getCssVar('border-width');
-  border-style: getCssVar('border-style');
-  border-color: getCssVar('message', 'border-color');
   position: fixed;
   left: 50%;
   top: 20px;
   transform: translateX(-50%);
   transition: opacity 0.3s, transform 0.4s, top 0.4s;
-  background-color: getCssVar('message', 'bg-color');
+  background-color: map.get($message, 'bg-color');
   transition: opacity getCssVar('transition-duration'), transform 0.4s, top 0.4s;
-  padding: getCssVar('message', 'padding');
+  padding: map.get($message, 'padding');
   display: flex;
   align-items: center;
 
@@ -32,7 +25,8 @@
 
   @include when(closable) {
     .#{$namespace}-message__content {
-      padding-right: 16px;
+      padding-right: 24px;
+      color: getCssVar('text-color', 'primary');
     }
   }
 
@@ -42,28 +36,19 @@
 
   @each $type in (success, info, warning, error) {
     @include m($type) {
-      @include css-var-from-global(
-        ('message', 'bg-color'),
-        ('color', $type, 'light-9')
-      );
-      @include css-var-from-global(
-        ('message', 'border-color'),
-        ('color', $type, 'light-8')
-      );
-      @include css-var-from-global(('message', 'text-color'), ('color', $type));
-
+      box-shadow: var(--shadow-2);
       .#{$namespace}-message__content {
         color: getCssVar('message', 'text-color');
       }
     }
 
     & .#{$namespace}-message-icon--#{$type} {
-      color: getCssVar('message', 'text-color');
+      color: getCssVar('color', if($type == info, 'primary', $type));
     }
   }
 
   @include e(icon) {
-    margin-right: 10px;
+    margin-right: 8px;
   }
 
   .#{$namespace}-message__badge {
@@ -84,17 +69,17 @@
   & .#{$namespace}-message__closeBtn {
     position: absolute;
     top: 50%;
-    right: 15px;
+    right: 12px;
     transform: translateY(-50%);
     cursor: pointer;
-    color: getCssVar('message', 'close-icon-color');
-    font-size: getCssVar('message', 'close-size');
+    color: map.get($message, 'close-icon-color');
+    font-size: map.get($message, 'close-font-size');
 
     &:focus {
       outline-width: 0;
     }
     &:hover {
-      color: getCssVar('message', 'close-hover-color');
+      color: map.get($message, 'close-icon-color-hover');
     }
   }
 }

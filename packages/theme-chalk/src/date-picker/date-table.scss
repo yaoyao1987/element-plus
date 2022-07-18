@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use '../common/var' as *;
 @use '../mixins/mixins' as *;
 
@@ -9,48 +11,48 @@
     .#{$namespace}-date-table__row {
       &:hover {
         .#{$namespace}-date-table-cell {
-          background-color: getCssVar('datepicker-inrange-bg-color');
+          background-color: map.get($datepicker, 'inrange-bg-color');
         }
         td.available:hover {
-          color: getCssVar('datepicker-text-color');
+          color: map.get($datepicker, 'text-color');
         }
         td:first-child .#{$namespace}-date-table-cell {
-          margin-left: 5px;
-          border-top-left-radius: 15px;
-          border-bottom-left-radius: 15px;
+          margin-left: 7px;
+          border-top-left-radius: 9px;
+          border-bottom-left-radius: 9px;
         }
         td:last-child .#{$namespace}-date-table-cell {
-          margin-right: 5px;
-          border-top-right-radius: 15px;
-          border-bottom-right-radius: 15px;
+          margin-right: 7px;
+          border-top-right-radius: 9px;
+          border-bottom-right-radius: 9px;
         }
       }
 
       &.current .#{$namespace}-date-table-cell {
-        background-color: getCssVar('datepicker-inrange-bg-color');
+        background-color: map.get($datepicker, 'inrange-bg-color');
       }
     }
   }
 
   td {
     width: 32px;
-    height: 30px;
-    padding: 4px 0;
+    height: 18px;
+    padding: 3px 0;
     box-sizing: border-box;
     text-align: center;
     cursor: pointer;
     position: relative;
 
     @include b(date-table-cell) {
-      height: 30px;
-      padding: 3px 0;
+      height: 18px;
+      // padding: 3px 0;
       box-sizing: border-box;
       @include b(date-table-cell__text) {
-        width: 24px;
-        height: 24px;
+        width: 18px;
+        height: 18px;
         display: block;
         margin: 0 auto;
-        line-height: 24px;
+        line-height: 18px;
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
@@ -60,7 +62,7 @@
 
     &.next-month,
     &.prev-month {
-      color: getCssVar('datepicker-off-text-color');
+      color: map.get($datepicker, 'off-text-color');
     }
 
     &.today {
@@ -76,13 +78,13 @@
     }
 
     &.available:hover {
-      color: getCssVar('datepicker-hover-text-color');
+      color: map.get($datepicker, 'text-color-hover');
     }
 
     &.in-range .#{$namespace}-date-table-cell {
-      background-color: getCssVar('datepicker-inrange-bg-color');
+      background-color: map.get($datepicker, 'inrange-bg-color');
       &:hover {
-        background-color: getCssVar('datepicker-inrange-hover-bg-color');
+        background-color: map.get($datepicker, 'inrange-bg-color-hover');
       }
     }
 
@@ -90,10 +92,11 @@
       .#{$namespace}-date-table-cell__text {
         color: $color-white;
         background-color: getCssVar('datepicker-active-color');
+        background-color: map.get($datepicker, 'bg-color-active');
       }
       &:focus-visible {
         .#{$namespace}-date-table-cell__text {
-          outline: 2px solid getCssVar('datepicker-active-color');
+          outline: 2px solid map.get($datepicker, 'active-color');
           outline-offset: 1px;
         }
       }
@@ -105,19 +108,19 @@
 
     &.start-date .#{$namespace}-date-table-cell__text,
     &.end-date .#{$namespace}-date-table-cell__text {
-      background-color: getCssVar('datepicker-active-color');
+      background-color: map.get($datepicker, 'active-color');
     }
 
     &.start-date .#{$namespace}-date-table-cell {
-      margin-left: 5px;
-      border-top-left-radius: 15px;
-      border-bottom-left-radius: 15px;
+      margin-left: 7px;
+      border-top-left-radius: 9px;
+      border-bottom-left-radius: 9px;
     }
 
     &.end-date .#{$namespace}-date-table-cell {
-      margin-right: 5px;
-      border-top-right-radius: 15px;
-      border-bottom-right-radius: 15px;
+      margin-right: 7px;
+      border-top-right-radius: 9px;
+      border-bottom-right-radius: 9px;
     }
 
     &.disabled .#{$namespace}-date-table-cell {
@@ -128,24 +131,24 @@
     }
 
     &.selected .#{$namespace}-date-table-cell {
-      margin-left: 5px;
-      margin-right: 5px;
-      background-color: getCssVar('datepicker-inrange-bg-color');
-      border-radius: 15px;
+      margin-left: 7px;
+      margin-right: 7px;
+      background-color: map.get($datepicker, 'inrange-bg-color');
+      border-radius: 9px;
       &:hover {
-        background-color: getCssVar('datepicker-inrange-hover-bg-color');
+        background-color: map.get($datepicker, 'inrange-bg-color-hover');
       }
     }
 
     &.selected .#{$namespace}-date-table-cell__text {
-      background-color: getCssVar('datepicker-active-color');
+      background-color: map.get($datepicker, 'active-color');
       color: $color-white;
-      border-radius: 15px;
+      border-radius: 9px;
     }
 
     &.week {
       font-size: 80%;
-      color: getCssVar('datepicker-header-text-color');
+      color: map.get($datepicker, 'header-text-color');
     }
 
     &:focus {
@@ -155,8 +158,8 @@
 
   th {
     padding: 5px;
-    color: getCssVar('datepicker-header-text-color');
+    color: map.get($datepicker, 'header-text-color');
     font-weight: 400;
-    border-bottom: solid 1px getCssVar('border-color-lighter');
+    // border-bottom: solid 1px getCssVar('border-color-lighter');
   }
 }

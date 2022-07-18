@@ -5,18 +5,16 @@
 @use 'common/var' as *;
 
 @include b(cascader) {
-  @include set-component-css-var('cascader', $cascader);
-
   display: inline-block;
   position: relative;
-  font-size: getCssVar('font-size', 'base');
+  font-size: map.get($cascader, 'font-size');
   line-height: map.get($input-height, 'default');
   outline: none;
 
   &:not(.is-disabled):hover {
     .#{$namespace}-input__wrapper {
       cursor: pointer;
-      box-shadow: 0 0 0 1px getCssVar('input', 'hover-border-color') inset;
+      box-shadow: 0 0 0 1px map.get($input, 'border-color-hover') inset;
     }
   }
 
@@ -29,6 +27,7 @@
 
       &::selection {
         outline: none;
+        border-color: map.get($input, 'border-color-focus');
       }
     }
 
@@ -44,7 +43,7 @@
 
     .icon-arrow-down {
       transition: transform getCssVar('transition-duration');
-      font-size: 14px;
+      font-size: 10px;
 
       @include when(reverse) {
         transform: rotateZ(180deg);
@@ -52,20 +51,12 @@
     }
 
     .icon-circle-close:hover {
-      color: var(
-        #{getCssVarName('input', 'clear-hover-color')},
-        map.get($input, 'clear-hover-color')
-      );
+      color: map.get($input, 'clear-color-hover');
     }
 
     @include when(focus) {
       .#{$namespace}-input__wrapper {
-        box-shadow: 0 0 0 1px
-          var(
-            #{getCssVarName('input', 'focus-border-color')},
-            map.get($input, 'focus-border-color')
-          )
-          inset;
+        box-shadow: 0 0 0 1px map.get($input, 'border-color-focus') inset;
       }
     }
   }
@@ -84,22 +75,31 @@
     }
   }
 
-  @include e(dropdown) {
-    @include set-component-css-var('cascader', $cascader);
-  }
+  // @include e(dropdown) {
+  //   @include set-component-css-var('cascader', $cascader);
+  // }
 
   @include e(dropdown) {
-    font-size: getCssVar('cascader-menu-font-size');
-    border-radius: getCssVar('cascader-menu-radius');
+    margin: 5px 0;
+    // font-size: getCssVar('cascader-menu-font-size');
+    // border-radius: getCssVar('cascader-menu-radius');
+    font-size: map.get($cascader, 'menu-font-size');
+    border-radius: map.get($cascader, 'border-radius');
 
+    // @include picker-popper(
+    //   getCssVar('cascader-menu-fill'),
+    //   getCssVar('cascader-menu-border'),
+    //   getCssVar('cascader-menu-shadow')
+    // );
     @include picker-popper(
-      getCssVar('cascader-menu-fill'),
-      getCssVar('cascader-menu-border'),
-      getCssVar('cascader-menu-shadow')
+      map.get($cascader, 'menu-fill'),
+      map.get($cascader, 'menu-border'),
+      map.get($cascader, 'menu-box-shadow')
     );
 
     &.#{$namespace}-popper {
-      box-shadow: getCssVar('cascader-menu-shadow');
+      // box-shadow: getCssVar('cascader-menu-shadow');
+      box-shadow: map.get($cascader, 'menu-box-shadow');
     }
   }
 
@@ -121,7 +121,9 @@
       max-width: 100%;
       margin: 2px 0 2px 6px;
       text-overflow: ellipsis;
-      background: getCssVar('cascader-tag-background');
+      // background: getCssVar('cascader-tag-background');
+      background: map.get($cascader, 'tag-bg-color');
+      color: getCssVar('text-color', 'primary');
 
       &:not(.is-hit) {
         border-color: transparent;
@@ -135,11 +137,11 @@
 
       .#{$namespace}-icon-close {
         flex: none;
-        background-color: getCssVar('text-color', 'placeholder');
+        background-color: getCssVar('text-color', 'secondary');
         color: getCssVar('color-white');
 
         &:hover {
-          background-color: getCssVar('text-color', 'secondary');
+          background-color: getCssVar('text-color', 'placeholder');
         }
       }
     }
@@ -160,7 +162,7 @@
   }
 
   @include e(suggestion-panel) {
-    border-radius: getCssVar('cascader-menu', 'radius');
+    border-radius: map.get($cascader, 'menu-border-radius');
   }
 
   @include e(suggestion-list) {
@@ -168,7 +170,7 @@
     margin: 0;
     padding: 6px 0;
     font-size: getCssVar('font-size', 'base');
-    color: getCssVar('cascader-menu', 'text-color');
+    color: map.get($cascader, 'menu-text-color');
     text-align: center;
   }
 
@@ -184,11 +186,11 @@
 
     &:hover,
     &:focus {
-      background: getCssVar('cascader-node', 'background-hover');
+      background: map.get($cascader, 'node-bg-color-hover');
     }
 
     &.is-checked {
-      color: getCssVar('cascader', 'menu-selected-text-color');
+      color: map.get($cascader, 'menu-text-color-selected');
       font-weight: bold;
     }
 
@@ -199,7 +201,7 @@
 
   @include e(empty-text) {
     margin: 10px 0;
-    color: getCssVar('cascader', 'color-empty');
+    color: map.get($cascader, 'empty-text-color');
   }
 
   @include e(search-input) {
@@ -208,16 +210,17 @@
     min-width: 60px;
     margin: 2px 0 2px map.get($input-padding-horizontal, 'default')-$border-width;
     padding: 0;
-    color: getCssVar('cascader', 'menu-text-color');
+    color: map.get($cascader, 'menu-text-color');
     border: none;
     outline: none;
     box-sizing: border-box;
-
+    font-size: getCssVar('font-size', 'base');
     background: transparent;
 
     &::placeholder {
       // two input overlap
-      color: transparent;
+      // color: transparent;
+      color: getCssVar('text-color', 'placeholder');
     }
   }
 }

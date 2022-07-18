@@ -6,19 +6,15 @@
 @use 'common/popup' as *;
 
 @include b(message-box) {
-  @include set-component-css-var('messagebox', $messagebox);
-}
-
-@include b(message-box) {
   display: inline-block;
-  width: getCssVar('messagebox-width');
+  width: map.get($message-box, 'width');
   padding-bottom: 10px;
   vertical-align: middle;
-  background-color: getCssVar('bg-color');
-  border-radius: getCssVar('messagebox-border-radius');
-  border: 1px solid getCssVar('border-color-lighter');
-  font-size: getCssVar('messagebox-font-size');
-  box-shadow: getCssVar('box-shadow-light');
+  background-color: map.get($message-box, 'bg-color');
+  border-radius: map.get($message-box, 'border-radius');
+  border: 1px solid getCssVar('border-color', 'light');
+  font-size: map.get($message-box, 'font-size');
+  box-shadow: getCssVar('box-shadow', 'light');
   text-align: left;
   overflow: hidden;
   backface-visibility: hidden;
@@ -56,30 +52,33 @@
 
   @include e(header) {
     position: relative;
-    padding: getCssVar('messagebox-padding-primary');
-    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    height: map.get($message-box, 'header-height');
+    padding: 0 map.get($message-box, 'padding');
+    background-color: map.get($message-box, 'header-bg-color');
+    word-break: break-all;
   }
 
   @include e(title) {
     padding-left: 0;
     margin-bottom: 0;
-    font-size: getCssVar('messagebox-font-size');
+    font-size: map.get($message-box, 'font-size');
     line-height: 1;
-    color: getCssVar('messagebox-title-color');
+    color: map.get($message-box, 'title-text-color');
   }
 
   @include e(headerbtn) {
     position: absolute;
-    top: getCssVar('messagebox-padding-primary');
-    right: getCssVar('messagebox-padding-primary');
+    top: 0;
+    right: 4px;
+    width: 36px;
+    height: 36px;
     padding: 0;
     border: none;
     outline: none;
     background: transparent;
-    font-size: var(
-      #{getCssVarName('message-close-size')},
-      map.get($message, 'close-size')
-    );
+    font-size: map.get($message-box, 'close-font-size');
     cursor: pointer;
 
     .#{$namespace}-message-box__close {
@@ -96,9 +95,9 @@
   }
 
   @include e(content) {
-    padding: 10px getCssVar('messagebox-padding-primary');
-    color: getCssVar('messagebox-content-color');
-    font-size: getCssVar('messagebox-content-font-size');
+    padding: map.get($message-box, 'padding-large');
+    color: map.get($message-box, 'content-text-color');
+    font-size: map.get($message-box, 'content-font-size');
   }
 
   @include e(container) {
@@ -121,7 +120,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 24px !important;
+    font-size: map.get($message-box, 'icon-size-large') !important;
 
     &::before {
       // 防止图标切割
@@ -141,8 +140,7 @@
 
     @each $type in (success, info, warning, error) {
       &.#{$namespace}-message-box-icon--#{$type} {
-        @include css-var-from-global(('messagebox', 'color'), ('color', $type));
-        color: getCssVar('messagebox-color');
+        color: getCssVar('color', $type);
       }
     }
   }
@@ -158,20 +156,20 @@
 
   @include e(errormsg) {
     color: getCssVar('color-error');
-    font-size: getCssVar('messagebox-error-font-size');
+    font-size: map.get($message-box, 'error-font-size');
     min-height: 18px;
     margin-top: 2px;
   }
 
   @include e(btns) {
-    padding: 5px 15px 0;
+    padding: 0 map.get($message-box, 'padding');
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
     align-items: center;
 
     & button:nth-child(2) {
-      margin-left: 10px;
+      margin-left: 8px;
     }
   }
 
@@ -181,6 +179,12 @@
 
   // centerAlign 布局
   @include m(center) {
+    padding-bottom: 30px;
+
+    @include e(header) {
+      padding-top: 30px;
+    }
+
     @include e(title) {
       position: relative;
       display: flex;
@@ -205,14 +209,37 @@
     }
 
     @include e(content) {
-      $padding-horizontal: calc(
-        #{getCssVar('messagebox', 'padding-primary')} + 12px
-      );
+      $padding-horizontal: calc(map.get($message-box, 'padding') + 12px);
 
       padding-left: $padding-horizontal;
       padding-right: $padding-horizontal;
 
       text-align: center;
+    }
+  }
+
+  @include when(confirm) {
+    border: none;
+    @include e(content) {
+      min-height: 90px;
+      box-sizing: border-box;
+    }
+    @include e(container) {
+      display: flex;
+    }
+    @include e(status) {
+      position: unset;
+      transform: none;
+      font-size: map.get($message-box, 'icon-size') !important;
+      transform: translateY(2px);
+
+      & + .#{$namespace}-message-box__message {
+        padding-left: 8px;
+      }
+    }
+    @include e(desc) {
+      font-size: map.get($message-box, 'desc-font-size');
+      color: map.get($message-box, 'desc-text-color');
     }
   }
 }

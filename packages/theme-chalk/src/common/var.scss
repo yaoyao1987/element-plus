@@ -1,6 +1,7 @@
 /* Element Chalk Variables */
 @use 'sass:math';
 @use 'sass:map';
+@use 'palette' as *;
 
 @use '../mixins/function.scss' as *;
 
@@ -17,117 +18,70 @@ $colors: map.deep-merge(
   (
     'white': #ffffff,
     'black': #000000,
-    'primary': (
-      'base': #409eff,
-    ),
-    'success': (
-      'base': #67c23a,
-    ),
-    'warning': (
-      'base': #e6a23c,
-    ),
-    'danger': (
-      'base': #f56c6c,
-    ),
-    'error': (
-      'base': #f56c6c,
-    ),
-    'info': (
-      'base': #909399,
-    ),
+    'primary': var(--blue-6),
+    'success': var(--green-6),
+    'warning': var(--orange-6),
+    'danger': var(--red-6),
+    'error': var(--red-6),
+    'info': var(--grey-11),
   ),
   $colors
 );
 
 $color-white: map.get($colors, 'white') !default;
 $color-black: map.get($colors, 'black') !default;
-$color-primary: map.get($colors, 'primary', 'base') !default;
-$color-success: map.get($colors, 'success', 'base') !default;
-$color-warning: map.get($colors, 'warning', 'base') !default;
-$color-danger: map.get($colors, 'danger', 'base') !default;
-$color-error: map.get($colors, 'error', 'base') !default;
-$color-info: map.get($colors, 'info', 'base') !default;
-
-// https://sass-lang.com/documentation/values/maps#immutability
-// mix colors with white/black to generate light/dark level
-@mixin set-color-mix-level(
-  $type,
-  $number,
-  $mode: 'light',
-  $mix-color: $color-white
-) {
-  $colors: map.deep-merge(
-    (
-      $type: (
-        '#{$mode}-#{$number}':
-          mix(
-            $mix-color,
-            map.get($colors, $type, 'base'),
-            math.percentage(math.div($number, 10))
-          ),
-      ),
-    ),
-    $colors
-  ) !global;
-}
-
-// $colors.primary.light-i
-// --el-color-primary-light-i
-// 10% 53a8ff
-// 20% 66b1ff
-// 30% 79bbff
-// 40% 8cc5ff
-// 50% a0cfff
-// 60% b3d8ff
-// 70% c6e2ff
-// 80% d9ecff
-// 90% ecf5ff
-@each $type in $types {
-  @for $i from 1 through 9 {
-    @include set-color-mix-level($type, $i, 'light', $color-white);
-  }
-}
-
-// --el-color-primary-dark-2
-@each $type in $types {
-  @include set-color-mix-level($type, 2, 'dark', $color-black);
-}
+$color-primary: map.get($colors, 'primary') !default;
+$color-success: map.get($colors, 'success') !default;
+$color-warning: map.get($colors, 'warning') !default;
+$color-danger: map.get($colors, 'danger') !default;
+$color-error: map.get($colors, 'error') !default;
+$color-info: map.get($colors, 'info') !default;
 
 $text-color: () !default;
 $text-color: map.merge(
   (
-    'primary': #303133,
-    'regular': #606266,
-    'secondary': #909399,
-    'placeholder': #a8abb2,
-    'disabled': #c0c4cc,
+    'primary': var(--grey-12),
+    'secondary': var(--grey-11),
+    'placeholder': var(--grey-10),
+    'disabled': var(--grey-7),
   ),
   $text-color
 );
 
+// 边框颜色
 $border-color: () !default;
 $border-color: map.merge(
   (
-    '': #dcdfe6,
-    'light': #e4e7ed,
-    'lighter': #ebeef5,
-    'extra-light': #f2f6fc,
-    'dark': #d4d7de,
-    'darker': #cdd0d6,
+    'heavy': var(--grey-10),
+    'base': var(--grey-7),
+    'light': var(--grey-5),
   ),
   $border-color
+);
+
+// 分割线颜色
+$line-color: () !default;
+$line-color: map.merge(
+  (
+    'base': var(--grey-1),
+    'light': var(--grey-6),
+  ),
+  $line-color
 );
 
 $fill-color: () !default;
 $fill-color: map.merge(
   (
-    '': #f0f2f5,
-    'light': #f5f7fa,
-    'lighter': #fafafa,
-    'extra-light': #fafcff,
-    'dark': #ebedf0,
-    'darker': #e6e8eb,
-    'blank': #ffffff,
+    // 需要突出于背景的组件填充（更深，有凹陷效果），输入框填充、单复选框填充
+    '1': var(--grey-2),
+    // 与背景颜色相同的组件填充， 卡片填充
+    '2': var(--grey-3),
+    // 需要突出于背景的组件填充（更浅，有浮出效果）,下拉菜单、穿梭框等
+    '3': var(--grey-4),
+    // 层级较高的头部区域的组件填充，表头填充、穿梭框头部、卡片tab
+    '4': var(--grey-5),
+    // 需要特别突出的组件
+    '5': var(--grey-7)
   ),
   $fill-color
 );
@@ -136,9 +90,14 @@ $fill-color: map.merge(
 $bg-color: () !default;
 $bg-color: map.merge(
   (
-    '': #ffffff,
-    'page': #f2f3f5,
-    'overlay': #ffffff,
+    // 整体背景
+    '1': var(--grey-1),
+    // 二级背景，表单页面等
+    '2': var(--grey-3),
+    // 三级背景，标题栏等
+    '3': var(--grey-5),
+    // 侧边菜单栏背景
+    '4': var(--grey-4)
   ),
   $bg-color
 );
@@ -151,7 +110,7 @@ $border-color-hover: getCssVar('text-color', 'disabled') !default;
 $border-radius: () !default;
 $border-radius: map.merge(
   (
-    'base': 4px,
+    'base': 2px,
     'small': 2px,
     'round': 20px,
     'circle': 100%,
@@ -163,21 +122,9 @@ $border-radius: map.merge(
 $box-shadow: () !default;
 $box-shadow: map.merge(
   (
-    '': (
-      0px 12px 32px 4px rgba(0, 0, 0, 0.04),
-      0px 8px 20px rgba(0, 0, 0, 0.08),
-    ),
-    'light': (
-      0px 0px 12px rgba(0, 0, 0, 0.12),
-    ),
-    'lighter': (
-      0px 0px 6px rgba(0, 0, 0, 0.12),
-    ),
-    'dark': (
-      0px 16px 48px 16px rgba(0, 0, 0, 0.08),
-      0px 12px 32px rgba(0, 0, 0, 0.12),
-      0px 8px 16px -8px rgba(0, 0, 0, 0.16),
-    ),
+    'base': var(--shadow-1),
+    'light': var(--shadow-2),
+    'ultrastrong': var(--shadow-3),
   ),
   $box-shadow
 );
@@ -206,6 +153,17 @@ $font-size: map.merge(
   $font-size
 );
 
+$font-weight: () !default;
+$font-weight: map.merge(
+  (
+    // 字重 - 常规
+    'regular': 400,
+    // 字重 - 加粗
+    'bold': 500
+  ),
+  $font-weight
+);
+
 // zIndex
 $z-index: () !default;
 $z-index: map.merge(
@@ -221,9 +179,10 @@ $z-index: map.merge(
 $disabled: () !default;
 $disabled: map.merge(
   (
-    'bg-color': getCssVar('fill-color', 'light'),
-    'text-color': getCssVar('text-color', 'placeholder'),
-    'border-color': getCssVar('border-color', 'light'),
+    'bg-color': var(--grey-3),
+    'text-color': var(--grey-7),
+    'border-color': var(--grey-7),
+    'icon-color': var(--grey-7),
   ),
   $disabled
 );
@@ -231,11 +190,71 @@ $disabled: map.merge(
 $common-component-size: () !default;
 $common-component-size: map.merge(
   (
-    'large': 40px,
-    'default': 32px,
+    'large': 36px,
+    'default': 30px,
     'small': 24px,
   ),
   $common-component-size
+);
+
+// Spacing
+$spacing: () !default;
+$spacing: map.merge(
+  (
+    // 间距 - 零
+    'none': 0,
+    // 间距 - 极紧凑尺寸内/外边距
+    'super-tight': 2px,
+    // 间距 - 超紧凑尺寸内/外边距
+    'extra-tight': 4px,
+    // 间距 - 紧凑尺寸内/外边距
+    'tight': 8px,
+    // 间距 - 默认（偏紧凑）尺寸内/外边距
+    'base-tight': 12px,
+    // 间距 - 默认尺寸内/外边距
+    'base': 16px,
+    // 间距 - 默认（偏宽松）尺寸内/外边距
+    'base-loose': 20px,
+    // 间距 - 宽松尺寸内/外边距
+    'loose': 24px,
+    // 间距 - 超宽松尺寸内/外边距
+    'extra-loose': 32px,
+    // 间距 - 极宽松尺寸内/外边距
+    'super-loose': 40px
+  ),
+  $spacing
+);
+
+// Icon Size
+$icon-size: () !default;
+$icon-size: map.merge(
+  (
+    // 图标尺寸 - 超小
+    'extra-small': 8px,
+    // 图标尺寸 - 小
+    'small': 16px,
+    // 图标尺寸 - 中
+    'default': 18px,
+    // 图标尺寸 - 大
+    'large': 20px,
+    // 图标尺寸 - 超大
+    'extra-large': 24px
+  ),
+  $icon-size
+);
+
+// Height Control
+$height-control: () !default;
+$height-control: map.merge(
+  (
+    // 表单项高度 - 小尺寸
+    'small': 24px,
+    // 表单项高度 - 默认尺寸
+    'default': 30px,
+    // 表单项高度 - 大尺寸
+    'large': 36px
+  ),
+  $height-control
 );
 
 // overlay
@@ -259,6 +278,18 @@ $mask-color: map.merge(
   $mask-color
 );
 
+// 组件 scss 变量 start
+// 变量名称可按如下规则定义：
+// [type]-[attrtype]-<attr>-[status]
+
+// type: 组件类型，如 button 的次要按钮（line）
+// attrtype: 属性的具体应用场景。如颜色，用于背景（bg）、文本（text）、边框（border）等
+// attr: 属性名称，如color、height、radius等
+// status: 表示组件状态或尺寸，如 hover、disabled 等
+
+// 如：@button-line-bg-color-hover
+// 如：@button-line-height-small
+
 // Components
 // ---
 // Checkbox
@@ -266,25 +297,31 @@ $mask-color: map.merge(
 $checkbox: () !default;
 $checkbox: map.merge(
   (
-    'font-size': 14px,
-    'font-weight': getCssVar('font-weight-primary'),
-    'text-color': getCssVar('text-color-regular'),
-    'input-height': 14px,
-    'input-width': 14px,
-    'border-radius': getCssVar('border-radius-small'),
-    'bg-color': getCssVar('fill-color', 'blank'),
-    'input-border': getCssVar('border'),
-    'disabled-border-color': getCssVar('border-color'),
-    'disabled-input-fill': getCssVar('fill-color', 'light'),
-    'disabled-icon-color': getCssVar('text-color-placeholder'),
-    'disabled-checked-input-fill': getCssVar('border-color-extra-light'),
-    'disabled-checked-input-border-color': getCssVar('border-color'),
-    'disabled-checked-icon-color': getCssVar('text-color-placeholder'),
-    'checked-text-color': getCssVar('color-primary'),
-    'checked-input-border-color': getCssVar('color-primary'),
-    'checked-bg-color': getCssVar('color-primary'),
-    'checked-icon-color': getCssVar('color', 'white'),
+    // 颜色
+    'text-color': getCssVar('text-color', 'primary'),
+    'text-color-checked': getCssVar('text-color', 'primary'),
+    'label-text-color': getCssVar('text-color', 'primary'),
+    'bg-color': getCssVar('fill-color', '1'),
+    'bg-color-checked': getCssVar('color-primary'),
+    'border-color-disabled': getCssVar('border-color-base'),
+    'input-fill-disabled': getCssVar('fill-color', '4'),
+    'input-fill-disabled-checked': getCssVar('fill-color', '4'),
+    'icon-color-checked': var(--grey-3),
+    'icon-color-disabled': getCssVar('text-color', 'placeholder'),
+    'icon-color-disabled-checked': getCssVar('text-color', 'placeholder'),
     'input-border-color-hover': getCssVar('color-primary'),
+    'input-border-color-checked': getCssVar('color-primary'),
+    'input-border-color-disabled': getCssVar('border-color-base'),
+    'input-border-color-disabled-checked': getCssVar('border-color-base'),
+    // 大小
+    'input-height': 12px,
+    'input-width': 12px,
+    // 字体
+    'font-size': getCssVar('font-size', 'base'),
+    'font-weight': map.get($font-weight, 'regular'),
+    // 其他
+    'border-radius': getCssVar('border-radius', 'small'),
+    'input-border': getCssVar('border')
   ),
   $checkbox
 );
@@ -292,9 +329,13 @@ $checkbox: map.merge(
 $checkbox-button: () !default;
 $checkbox-button: map.merge(
   (
-    'checked-bg-color': getCssVar('color-primary'),
-    'checked-text-color': getCssVar('color-white'),
-    'checked-border-color': getCssVar('color-primary'),
+    // 颜色
+    'text-color-hover': getCssVar('color-primary'),
+    'text-color-checked': getCssVar('color-primary'),
+    'bg-color-checked': getCssVar('color-primary', '2'),
+    'border-color-checked': getCssVar('color-primary'),
+    // 其他
+    'box-shadow': -1px 0 0 0 getCssVar('color-primary', '7')
   ),
   $checkbox-button
 );
@@ -324,18 +365,32 @@ $checkbox-bordered-padding-right: map.merge(
 $radio: () !default;
 $radio: map.merge(
   (
-    'font-size': getCssVar('font-size-base'),
-    'text-color': getCssVar('text-color-regular'),
-    'font-weight': getCssVar('font-weight-primary'),
-    'input-height': 14px,
-    'input-width': 14px,
-    'input-border-radius': getCssVar('border-radius-circle'),
-    'input-bg-color': getCssVar('fill-color', 'blank'),
+    // 颜色
+    'text-color': getCssVar('text-color', 'primary'),
+    'input-bg-color': getCssVar('fill-color', '1'),
+    // 间距
+    // 大小
+    'input-width': 12px,
+    'input-height': 12px,
+    // 字体
+    'font-size': getCssVar('font-size', 'base'),
+    'font-weight': map.get($font-weight, 'regular'),
+    // 其他
     'input-border': getCssVar('border'),
-    'input-border-color': getCssVar('border-color'),
-    'input-border-color-hover': getCssVar('color-primary'),
+    'input-border-color': getCssVar('border-color', 'base'),
+    'input-border-color-hover': getCssVar('color', 'primary'),
+    'input-border-radius': getCssVar('border-radius', 'circle')
   ),
   $radio
+);
+
+$radio-font-size: () !default;
+$radio-font-size: map.merge(
+  (
+    'large': 14px,
+    'small': 12px,
+  ),
+  $radio-font-size
 );
 
 $radio-height: () !default;
@@ -344,10 +399,11 @@ $radio-height: map.merge($common-component-size, $radio-height);
 $radio-button: () !default;
 $radio-button: map.merge(
   (
-    'checked-bg-color': getCssVar('color-primary'),
-    'checked-text-color': getCssVar('color-white'),
-    'checked-border-color': getCssVar('color-primary'),
-    'disabled-checked-fill': getCssVar('border-color-extra-light'),
+    // 颜色
+    'bg-color-checked': getCssVar('color', 'primary-2'),
+    'text-color-checked': getCssVar('color', 'primary'),
+    'border-color-checked': getCssVar('color', 'primary'),
+    'bg-color-disabled-checked': getCssVar('border-color', 'light')
   ),
   $radio-button
 );
@@ -355,12 +411,12 @@ $radio-button: map.merge(
 $radio-disabled: () !default;
 $radio-disabled: map.merge(
   (
-    'input-border-color': getCssVar('disabled-border-color'),
-    'input-fill': getCssVar('disabled-bg-color'),
-    'icon-color': getCssVar('disabled-bg-color'),
-    'checked-input-border-color': getCssVar('disabled-border-color'),
-    'checked-input-fill': getCssVar('disabled-bg-color'),
-    'checked-icon-color': getCssVar('text-color-placeholder'),
+    'input-border-color': getCssVar('disabled', 'border-color'),
+    'input-fill': getCssVar('disabled', 'bg-color'),
+    'icon-color': getCssVar('disabled', 'bg-color'),
+    'input-border-color-checked': getCssVar('disabled', 'border-color'),
+    'input-fill-checked': getCssVar('disabled', 'bg-color'),
+    'icon-color-checked': getCssVar('text-color', 'placeholder'),
   ),
   $radio-disabled
 );
@@ -368,9 +424,9 @@ $radio-disabled: map.merge(
 $radio-checked: () !default;
 $radio-checked: map.merge(
   (
-    'text-color': getCssVar('color-primary'),
-    'input-border-color': getCssVar('color-primary'),
-    'icon-color': getCssVar('color-primary'),
+    'text-color': getCssVar('color', 'primary'),
+    'input-border-color': getCssVar('color', 'primary-4'),
+    'icon-color': getCssVar('color', 'primary-2'),
   ),
   $radio-checked
 );
@@ -399,14 +455,17 @@ $radio-bordered-input-width: map.merge(
 $select: () !default;
 $select: map.merge(
   (
+    // 颜色
     'border-color-hover': getCssVar('border-color-hover'),
-    'disabled-border': getCssVar('disabled-border-color'),
-    'font-size': getCssVar('font-size-base'),
-    'close-hover-color': getCssVar('text-color-secondary'),
+    'border-color-disabled': getCssVar('disabled-border-color'),
+    'close-color-hover': getCssVar('text-color-secondary'),
     'input-color': getCssVar('text-color-placeholder'),
     'multiple-input-color': getCssVar('text-color-regular'),
-    'input-focus-border-color': getCssVar('color-primary'),
+    'input-border-color-focus': getCssVar('color-primary'),
+    // 字体
+    'font-size': getCssVar('font-size-base'),
     'input-font-size': 14px,
+    'arrow-font-size': 8px
   ),
   $select
 );
@@ -414,11 +473,13 @@ $select: map.merge(
 $select-option: () !default;
 $select-option: map.merge(
   (
+    // 颜色
     'text-color': getCssVar('text-color-regular'),
     'disabled-color': getCssVar('text-color-placeholder'),
-    'height': 34px,
     'hover-background': getCssVar('fill-color', 'light'),
     'selected-text-color': getCssVar('color-primary'),
+    // 大小
+    'height': 34px
   ),
   $select-option
 );
@@ -426,9 +487,12 @@ $select-option: map.merge(
 $select-group: () !default;
 $select-group: map.merge(
   (
+    // 颜色
     'text-color': getCssVar('color-info'),
+    // 大小
     'height': 30px,
-    'font-size': 12px,
+    // 字体
+    'font-size': 12px
   ),
   $select-group
 );
@@ -436,13 +500,17 @@ $select-group: map.merge(
 $select-dropdown: () !default;
 $select-dropdown: map.merge(
   (
-    'bg-color': getCssVar('bg-color', 'overlay'),
-    'shadow': getCssVar('box-shadow-light'),
-    'empty-color': getCssVar('text-color-secondary'),
-    'max-height': 274px,
+    // 颜色
+    'bg-color': getCssVar('fill-color', '3'),
+    'empty--textcolor': getCssVar('text-color', 'secondary'),
+    // 间距
     'padding': 6px 0,
     'empty-padding': 10px 0,
-    'border': 1px solid getCssVar('border-color-light'),
+    // 大小
+    'max-height': 274px,
+    // 其他
+    'border': 1px solid getCssVar('border-color', 'light'),
+    'shadow': getCssVar('box-shadow', 'light')
   ),
   $select-dropdown
 );
@@ -476,19 +544,34 @@ $alert: map.merge(
 
 // MessageBox
 // css3 var in packages/theme-chalk/src/message-box.scss
-$messagebox: () !default;
-$messagebox: map.merge(
+$message-box: () !default;
+$message-box: map.merge(
   (
-    'title-color': getCssVar('text-color-primary'),
-    'width': 420px,
-    'border-radius': 4px,
-    'font-size': getCssVar('font-size-large'),
-    'content-font-size': getCssVar('font-size-base'),
-    'content-color': getCssVar('text-color-regular'),
+    // 颜色
+    'bg-color': getCssVar('fill-color', '2'),
+    'header-bg-color': getCssVar('fill-color', '4'),
+    'title-text-color': getCssVar('text-color', 'primary'),
+    'content-text-color': getCssVar('text-color', 'primary'),
+    'desc-text-color': getCssVar('text-color', 'secondary'),
+    // 间距
+    'padding': map.get($spacing, 'base'),
+    'padding-large': map.get($spacing, 'loose') map.get($spacing, 'base'),
+    // 大小
+    'width': 350px,
+    'header-height': 36px,
+    'icon-size': map.get($icon-size, 'large'),
+    'icon-size-large': map.get($icon-size, 'extra-large'),
+    // 字体
+    'font-size': getCssVar('font-size', 'base'),
+    'title-font-weight': map.get($font-weight, 'bold'),
+    'content-font-size': getCssVar('font-size', 'base'),
+    'desc-font-size': getCssVar('font-size', 'extra-small'),
     'error-font-size': 12px,
-    'padding-primary': 15px,
+    'close-font-size': getCssVar('font-size', 'medium'),
+    // 其他
+    'border-radius': getCssVar('border-radius', 'base')
   ),
-  $messagebox
+  $message-box
 );
 
 // Message
@@ -496,13 +579,17 @@ $messagebox: map.merge(
 $message: () !default;
 $message: map.merge(
   (
-    'min-width': 380px,
-    'bg-color': getCssVar('color', 'info', 'light-9'),
-    'border-color': getCssVar('border-color-lighter'),
-    'padding': 15px 15px 15px 20px,
-    'close-size': 16px,
-    'close-icon-color': getCssVar('text-color-placeholder'),
-    'close-hover-color': getCssVar('text-color-secondary'),
+    // 颜色
+    'bg-color': getCssVar('fill-color', '3'),
+    'close-icon-color': getCssVar('text-color', 'primary'),
+    'close-icon-color-hover': getCssVar('text-color', 'secondary'),
+    // 间距
+    'padding': 12px map.get($spacing, 'base'),
+    // 大小
+    'min-width': 176px,
+    // 字体
+    'close-font-size': 12px,
+    // 其他
   ),
   $message
 );
@@ -518,11 +605,7 @@ $notification: map.merge(
     'shadow': getCssVar('box-shadow-light'),
     'border-color': getCssVar('border-color-lighter'),
     'icon-size': 24px,
-    'close-font-size':
-      var(
-        #{getCssVarName('message-close-size')},
-        map.get($message, 'close-size')
-      ),
+    'close-font-size': map.get($message, 'close-font-size'),
     'group-margin-left': 13px,
     'group-margin-right': 8px,
     'content-font-size': getCssVar('font-size-base'),
@@ -540,19 +623,24 @@ $notification: map.merge(
 $input: () !default;
 $input: map.merge(
   (
-    'text-color': getCssVar('text-color-regular'),
-    'border': getCssVar('border'),
-    'hover-border': getCssVar('border-color-hover'),
-    'focus-border': getCssVar('color-primary'),
+    // 颜色
+    'text-color': getCssVar('text-color', 'primary'),
     'transparent-border': 0 0 0 1px transparent inset,
-    'border-color': getCssVar('border-color'),
-    'border-radius': getCssVar('border-radius-base'),
-    'bg-color': getCssVar('fill-color', 'blank'),
-    'icon-color': getCssVar('text-color-placeholder'),
-    'placeholder-color': getCssVar('text-color-placeholder'),
-    'hover-border-color': getCssVar('border-color-hover'),
-    'clear-hover-color': getCssVar('text-color-secondary'),
-    'focus-border-color': getCssVar('color-primary'),
+    'border-color': getCssVar('border-color', 'base'),
+    'border-color-hover': getCssVar('color', 'primary'),
+    'border-color-focus': getCssVar('color', 'primary'),
+    'bg-color': getCssVar('fill-color', '1'),
+    'icon-color': getCssVar('text-color', 'placeholder'),
+    'placeholder-color': getCssVar('text-color', 'placeholder'),
+    'clear-color-hover': getCssVar('text-color', 'secondary'),
+    'count-text-color': getCssVar('text-color', 'placeholder'),
+    'mixed-bg-color': getCssVar('fill-color', '4'),
+    // 间距
+    'margin': 0 -16px,
+    'padding': 0 16px,
+    // 其他
+    'border': getCssVar('border-color', 'base'),
+    'border-radius': getCssVar('border-radius', 'base')
   ),
   $input
 );
@@ -560,12 +648,21 @@ $input: map.merge(
 $input-disabled: () !default;
 $input-disabled: map.merge(
   (
-    'fill': getCssVar('disabled-bg-color'),
-    'border': getCssVar('disabled-border-color'),
-    'text-color': getCssVar('disabled-text-color'),
-    'placeholder-color': getCssVar('text-color-placeholder'),
+    'fill': getCssVar('disabled', 'bg-color'),
+    'border': getCssVar('disabled', 'border-color'),
+    'text-color': getCssVar('disabled', 'text-color'),
+    'placeholder-color': getCssVar('text-color', 'placeholder'),
   ),
   $input-disabled
+);
+
+$input-readonly: () !default;
+$input-readonly: map.merge(
+  (
+    'fill-color': getCssVar('disabled', 'bg-color'),
+    'border-color': getCssVar('border-color', 'light'),
+  ),
+  $input-readonly
 );
 
 $input-font-size: () !default;
@@ -597,8 +694,8 @@ $input-number-width: map.merge(
 $input-padding-horizontal: () !default;
 $input-padding-horizontal: map.merge(
   (
-    'large': 16px,
-    'default': 12px,
+    'large': 12px,
+    'default': 8px,
     'small': 8px,
   ),
   $input-padding-horizontal
@@ -609,17 +706,32 @@ $input-padding-horizontal: map.merge(
 $cascader: () !default;
 $cascader: map.merge(
   (
-    'menu-text-color': getCssVar('text-color-regular'),
-    'menu-selected-text-color': getCssVar('color-primary'),
-    'menu-fill': getCssVar('bg-color', 'overlay'),
-    'menu-font-size': getCssVar('font-size-base'),
-    'menu-radius': getCssVar('border-radius-base'),
-    'menu-border': solid 1px getCssVar('border-color-light'),
-    'menu-shadow': getCssVar('box-shadow-light'),
-    'node-background-hover': getCssVar('fill-color', 'light'),
-    'node-color-disabled': getCssVar('text-color-placeholder'),
-    'color-empty': getCssVar('text-color-placeholder'),
-    'tag-background': getCssVar('fill-color'),
+    // 'menu-text-color': getCssVar('text-color-regular'),
+    // 'menu-selected-text-color': getCssVar('color-primary'),
+    // 'menu-fill': getCssVar('bg-color', 'overlay'),
+    // 'menu-font-size': getCssVar('font-size-base'),
+    // 'menu-radius': getCssVar('border-radius-base'),
+    // 'menu-border': solid 1px getCssVar('border-color-light'),
+    // 'menu-shadow': getCssVar('box-shadow-light'),
+    // 'node-background-hover': getCssVar('fill-color', 'light'),
+    // 'node-color-disabled': getCssVar('text-color-placeholder'),
+    // 'color-empty': getCssVar('text-color-placeholder'),
+    // 'tag-background': getCssVar('fill-color'),
+    // 颜色
+    'menu-text-color': var(--el-text-color-primary),
+    'menu-text-color-selected': var(--el-color-primary),
+    'menu-fill': var(--grey-4),
+    'node-bg-color-hover': var(--el-color-info-8),
+    'node-text-color-disabled': var(--el-disabled-text-color),
+    'empty-text-color': var(--el-text-color-placeholder),
+    'tag-bg-color': var(--grey-6),
+    // 字体
+    'font-size': var(--el-font-size-base),
+    'menu-font-size': var(--el-font-size-base),
+    // 其他
+    'menu-border-radius': var(--el-border-radius-base),
+    'menu-border': solid 1px var(--el-line-color-base),
+    'menu-box-shadow': var(--el-box-shadow-light)
   ),
   $cascader
 );
@@ -629,25 +741,49 @@ $cascader: map.merge(
 $button: () !default;
 $button: map.merge(
   (
-    'font-weight': getCssVar('font-weight-primary'),
-    'border-color': getCssVar('border-color'),
-    'bg-color': getCssVar('fill-color', 'blank'),
-    'text-color': getCssVar('text-color', 'regular'),
-    'disabled-text-color': getCssVar('disabled-text-color'),
-    'disabled-bg-color': getCssVar('fill-color', 'blank'),
-    'disabled-border-color': getCssVar('border-color-light'),
+    // 颜色
+    'bg-color': transparent,
+    'text-color': getCssVar('text-color', 'secondary'),
+    'text-color-hover': getCssVar('color', 'primary'),
+    'text-color-active': getCssVar('color', 'primary'),
+    'text-color-disabled': getCssVar('text-color', 'placeholder'),
+    'bg-color-hover': getCssVar('color', 'primary-2'),
+    'bg-color-active': getCssVar('color', 'primary-2'),
+    'bg-color-disabled': getCssVar('text-color', 'disabled'),
     'divide-border-color': rgba($color-white, 0.5),
-    'hover-text-color': getCssVar('color-primary'),
-    'hover-bg-color': getCssVar('color-primary', 'light-9'),
-    'hover-border-color': getCssVar('color-primary-light-7'),
-    'active-text-color': getCssVar('button-hover-text-color'),
-    'active-border-color': getCssVar('color-primary'),
-    'active-bg-color': getCssVar('button', 'hover-bg-color'),
-    'outline-color': getCssVar('color-primary', 'light-5'),
-    'hover-link-text-color': getCssVar('color-info'),
-    'active-color': getCssVar('text-color', 'primary'),
+    'border-color': getCssVar('border-color', 'base'),
+    'border-color-hover': getCssVar('color', 'primary-3'),
+    'border-color-active': getCssVar('color', 'primary'),
+    'border-color-disabled': getCssVar('text-color', 'disabled'),
+    'plain-text-color-hover': getCssVar('color', 'primary'),
+    'plain-text-color-active': getCssVar('color', 'primary-7'),
+    'plain-border-color-hover': getCssVar('color', 'primary'),
+    'plain-border-color-active': getCssVar('color', 'primary-7'),
+    'plain-bg-color-hover': getCssVar('color', 'primary-1'),
+    'text-text-color': getCssVar('color', 'primary'),
+    'text-text-color-hover': getCssVar('color', 'primary-5'),
+    'text-text-color-active': getCssVar('color', 'primary-7'),
+    'text-border-color-hover': transparent,
+    'text-border-color-active': transparent,
+    'text-bg-color-hover': transparent,
+    'text-bg-color-active': transparent,
+    // 字体
+    'font-weight': map.get($font-weight, 'regular'),
+    // 其他
+    'border': getCssVar('border'),
+    'border-radius-round': getCssVar('border-radius', 'round')
   ),
   $button
+);
+
+$button-icon-span-gap: () !default;
+$button-icon-span-gap: map.merge(
+  (
+    'large': 8px,
+    'default': 6px,
+    'small': 4px,
+  ),
+  $button-icon-span-gap
 );
 
 $button-border-width: $border-width !default;
@@ -679,9 +815,9 @@ $button-text-color: () !default;
 $button-font-size: () !default;
 $button-font-size: map.merge(
   (
-    'large': getCssVar('font-size', 'base'),
+    'large': getCssVar('font-size', 'medium'),
     'default': getCssVar('font-size', 'base'),
-    'small': 12px,
+    'small': getCssVar('font-size', 'extra-small'),
   ),
   $button-font-size
 );
@@ -721,10 +857,77 @@ $button-padding-horizontal: map.merge(
 $switch: () !default;
 $switch: map.merge(
   (
-    'on-color': getCssVar('color-primary'),
-    'off-color': getCssVar('border-color'),
+    // 颜色
+    'on-color': getCssVar('color', 'primary'),
+    'off-color': getCssVar('border-color', 'base'),
+    // 大小
+    'width': 40px,
+    'height': 20px,
+    'button-size': 16px,
+    // 其他
+    'core-border-radius': 10px
   ),
   $switch
+);
+
+$switch-height: () !default;
+$switch-height: map.merge(
+  (
+    'large': 40px,
+    'default': 32px,
+    'small': 24px,
+  ),
+  $switch-height
+);
+
+$switch-font-size: () !default;
+$switch-font-size: map.merge(
+  (
+    'large': 14px,
+    'default': 14px,
+    'small': 12px,
+  ),
+  $switch-font-size
+);
+
+$switch-core-border-radius: () !default;
+$switch-core-border-radius: map.merge(
+  (
+    'large': 12px,
+    'default': 10px,
+    'small': 8px,
+  ),
+  $switch-core-border-radius
+);
+
+$switch-core-width: () !default;
+$switch-core-width: map.merge(
+  (
+    'large': 50px,
+    'default': 40px,
+    'small': 30px,
+  ),
+  $switch-core-width
+);
+
+$switch-core-height: () !default;
+$switch-core-height: map.merge(
+  (
+    'large': 24px,
+    'default': 20px,
+    'small': 16px,
+  ),
+  $switch-core-height
+);
+
+$switch-button-size: () !default;
+$switch-button-size: map.merge(
+  (
+    'large': 20px,
+    'default': 16px,
+    'small': 12px,
+  ),
+  $switch-button-size
 );
 
 // Dialog
@@ -835,14 +1038,19 @@ $popup: map.merge(
 $popover: () !default;
 $popover: map.merge(
   (
-    'bg-color': getCssVar('bg-color', 'overlay'),
-    'font-size': getCssVar('font-size-base'),
-    'border-color': getCssVar('border-color-lighter'),
+    // 颜色
+    'bg-color': getCssVar('fill-color', '3'),
+    'border-color': var(--grey-4),
+    'title-text-color': getCssVar('text-color', 'primary'),
+    // 间距
     'padding': 12px,
     'padding-large': 18px 20px,
+    // 字体
+    'font-size': getCssVar('font-size', 'base'),
     'title-font-size': 16px,
-    'title-text-color': getCssVar('text-color-primary'),
-    'border-radius': 4px,
+    // 其他
+    'border-radius': 2px,
+    'box-shadow': getCssVar('box-shadow', 'light')
   ),
   $popover
 );
@@ -852,9 +1060,37 @@ $popover: map.merge(
 $popper: () !default;
 $popper: map.merge(
   (
-    'border-radius': var(#{getCssVarName('popover-border-radius')}, 4px),
+    // 颜色
+    'bg-color': getCssVar('fill-color', '3'),
+    'text-color': getCssVar('color', 'white'),
+    // 间距
+    'padding': 10px,
+    // 其他
+    'border-radius': 4px
   ),
   $popper
+);
+
+// Tooltip
+$tooltip: () !default;
+$tooltip: map.merge(
+  (
+    // 颜色
+    // 'fill': rgba(0, 0, 0, 0.8),
+    'fill': getCssVar('color', 'black'),
+    'color': getCssVar('color', 'white'),
+    'color-light': var(--blue-6),
+    // 间距
+    'padding': 10px,
+    // 大小
+    'arrow-size': 6px,
+    // 字体
+    'font-size': 12px,
+    // 其他
+    'border-color': var(--el-text-color-primary),
+    'shadow': 0 2px 6px 0 rgba(0, 0, 0, 0.2)
+  ),
+  $tooltip
 );
 
 // skeleton
@@ -937,9 +1173,10 @@ $dropdown: map.merge(
 $drawer: () !default;
 $drawer: map.merge(
   (
-    'bg-color':
-      var(#{getCssVarName('dialog', 'bg-color')}, #{getCssVar('bg-color')}),
-    'padding-primary': var(#{getCssVarName('dialog', 'padding-primary')}, 20px),
+    // 颜色
+    'bg-color': getCssVar('fill-color', '2'),
+    // 间距
+    'padding': map.get($spacing, 'base') map.get($spacing, 'loose')
   ),
   $drawer
 );
@@ -1036,16 +1273,20 @@ $rate: map.merge(
 $datepicker: () !default;
 $datepicker: map.merge(
   (
-    'text-color': getCssVar('text-color-regular'),
-    'off-text-color': getCssVar('text-color-placeholder'),
-    'header-text-color': getCssVar('text-color-regular'),
-    'icon-color': getCssVar('text-color-primary'),
-    'border-color': getCssVar('disabled-border-color'),
-    'inner-border-color': getCssVar('border-color-light'),
-    'inrange-bg-color': getCssVar('border-color-extra-light'),
-    'inrange-hover-bg-color': getCssVar('border-color-extra-light'),
-    'active-color': getCssVar('color-primary'),
-    'hover-text-color': getCssVar('color-primary'),
+    // 颜色
+    'bg-color': var(--grey-4),
+    'bg-color-active': var(--el-color-primary),
+    'text-color': var(--el-text-color-primary),
+    'text-color-hover': var(--grey-8),
+    'text-color-active': var(--el-color-primary),
+    'off-text-color': var(--el-text-color-placeholder),
+    'header-text-color': var(--el-text-color-secondary),
+    'icon-color': var(--el-text-color-primary),
+    'border-color': var(--el-border-color-light),
+    'inner-border-color': var(--grey-1),
+    'inrange-bg-color': var(--transparent-4),
+    'inrange-bg-color-hover': var(--transparent-4),
+    'active-color': var(--el-color-primary)
   ),
   $datepicker
 );
@@ -1177,11 +1418,14 @@ $backtop: map.merge(
 $link: () !default;
 $link: map.merge(
   (
-    'font-size': getCssVar('font-size-base'),
-    'font-weight': getCssVar('font-weight-primary'),
-    'text-color': getCssVar('text-color-regular'),
-    'hover-text-color': getCssVar('color-primary'),
-    'disabled-text-color': getCssVar('text-color-placeholder'),
+    // 颜色
+    'default-text-color': getCssVar('text-color', 'secondary'),
+    'default-text-color-hover': getCssVar('color', 'primary'),
+    'default-text-color-active': getCssVar('color', 'primary'),
+    'text-color-disabled': getCssVar('text-color', 'placeholder'),
+    // 字体
+    'font-size': placeholder('font-size', 'base'),
+    'font-weight': map.get($font-weight, 'bold')
   ),
   $link
 );
@@ -1219,9 +1463,65 @@ $calendar: map.merge(
 $form: () !default;
 $form: map.merge(
   (
-    'label-font-size': getCssVar('font-size-base'),
+    // 颜色
+    'text-color': getCssVar('text-color', 'primary'),
+    'label-text-color': getCssVar('text-color', 'primary'),
+    'text-label-text-color': getCssVar('text-color', 'secondary'),
+    // 字体
+    'font-size': getCssVar('font-size-base'),
+    'label-font-size': getCssVar('font-size-base')
   ),
   $form
+);
+
+$form-item-margin-bottom: () !default;
+$form-item-margin-bottom: map.merge(
+  (
+    'large': 22px,
+    'default': 16px,
+    'small': 16px,
+  ),
+  $form-item-margin-bottom
+);
+
+$form-item-line-height: () !default;
+$form-item-line-height: map.merge(
+  (
+    'large': 36px,
+    'default': 30px,
+    'small': 24px,
+  ),
+  $form-item-line-height
+);
+
+$form-item-error-padding-top: () !default;
+$form-item-error-padding-top: map.merge(
+  (
+    'large': 4px,
+    'default': 2px,
+    'small': 2px,
+  ),
+  $form-item-error-padding-top
+);
+
+$form-item-label-top-line-height: () !default;
+$form-item-label-top-line-height: map.merge(
+  (
+    'large': 22px,
+    'default': 22px,
+    'small': 20px,
+  ),
+  $form-item-label-top-line-height
+);
+
+$form-item-label-top-margin-bottom: () !default;
+$form-item-label-top-margin-bottom: map.merge(
+  (
+    'large': 12px,
+    'default': 8px,
+    'small': 4px,
+  ),
+  $form-item-label-top-margin-bottom
 );
 
 // Avatar

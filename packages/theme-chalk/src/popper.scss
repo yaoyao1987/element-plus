@@ -1,14 +1,12 @@
+@use 'sass:map';
+
 @use 'mixins/mixins' as *;
 @use 'mixins/var' as *;
 @use 'common/var' as *;
 
 @include b(popper) {
-  @include set-component-css-var('popper', $popper);
-}
-
-@include b(popper) {
   position: absolute;
-  border-radius: getCssVar('popper', 'border-radius');
+  border-radius: map.get($popper, 'border-radius');
   padding: 5px 11px;
   z-index: 2000;
   font-size: 12px;
@@ -32,12 +30,12 @@
   }
 
   @include when(light) {
-    background: getCssVar('bg-color', 'overlay');
+    background: map.get($popper, 'bg-color');
     border: 1px solid getCssVar('border-color', 'light');
 
     #{$arrow-selector}::before {
       border: 1px solid getCssVar('border-color', 'light');
-      background: getCssVar('bg-color', 'overlay');
+      background: map.get($popper, 'bg-color');
       right: 0;
     }
   }

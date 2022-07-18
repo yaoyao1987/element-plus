@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use '../mixins/mixins' as *;
 @use '../common/var' as *;
 
@@ -8,26 +10,31 @@
   @include e(content) {
     position: relative;
     text-align: center;
-    padding: 10px;
+    // padding: 10px;
     z-index: 1;
   }
 
   @include e(cell) {
     box-sizing: border-box;
     margin: 0;
-    padding: 4px 7px 7px;
+    // padding: 4px 7px 7px;
+    padding-top: 4px;
     width: 50%;
     display: inline-block;
+
+    &:first-child {
+      border-right: 1px solid getCssVar('line-color-base');
+    }
   }
 
   @include e(header) {
-    margin-bottom: 5px;
+    // margin-bottom: 5px;
     text-align: center;
     font-size: 14px;
   }
 
   @include e(body) {
     border-radius: 2px;
-    border: 1px solid getCssVar('datepicker-border-color');
+    border: 1px solid map.get($datepicker, 'border-color');
   }
 }

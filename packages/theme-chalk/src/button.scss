@@ -35,7 +35,7 @@ $button-icon-span-gap: map.merge(
   box-sizing: border-box;
   outline: none;
   transition: 0.1s;
-  font-weight: getCssVar('button', 'font-weight');
+  // font-weight: getCssVar('button', 'font-weight');
   user-select: none;
   vertical-align: middle;
   -webkit-appearance: none;
@@ -45,16 +45,16 @@ $button-icon-span-gap: map.merge(
 
   &:hover,
   &:focus {
-    color: getCssVar('button', 'hover', 'text-color');
-    border-color: getCssVar('button', 'hover', 'border-color');
-    background-color: getCssVar('button', 'hover', 'bg-color');
+    color: getCssVar('button', 'text-color', 'hover');
+    border-color: getCssVar('button', 'border-color', 'hover');
+    background-color: getCssVar('button', 'bg-color', 'hover');
     outline: none;
   }
 
   &:active {
-    color: getCssVar('button', 'active', 'text-color');
-    border-color: getCssVar('button', 'active', 'border-color');
-    background-color: getCssVar('button', 'active', 'bg-color');
+    color: getCssVar('button', 'text-color', 'active');
+    border-color: getCssVar('button', 'border-color', 'active');
+    background-color: getCssVar('button', 'bg-color', 'active');
     outline: none;
   }
 
@@ -69,7 +69,7 @@ $button-icon-span-gap: map.merge(
   }
 
   & + & {
-    margin-left: 12px;
+    margin-left: 8px;
   }
 
   @include button-size(
@@ -94,23 +94,52 @@ $button-icon-span-gap: map.merge(
 
   @include when(plain) {
     @include css-var-from-global(
-      ('button', 'hover', 'text-color'),
+      ('button', 'text-color', 'hover'),
       ('color', 'primary')
     );
     @include css-var-from-global(
-      ('button', 'hover', 'bg-color'),
-      ('fill-color', 'blank')
+      ('button', 'bg-color', 'hover'),
+      ('color', 'primary-1')
     );
     @include css-var-from-global(
-      ('button', 'hover', 'border-color'),
+      ('button', 'border-color', 'hover'),
       ('color', 'primary')
+    );
+    @include css-var-from-global(
+      ('button', 'text-color', 'active'),
+      ('color', 'primary-7')
+    );
+    @include css-var-from-global(
+      ('button', 'border-color', 'active'),
+      ('color', 'primary-7')
     );
   }
 
+  @include when(dotted) {
+    border-style: dotted;
+    @include set-css-var-value(
+      ('button', 'border-color'),
+      getCssVar('border-color', 'heavy')
+    );
+
+    @include set-css-var-value(
+      ('button', 'text-color', 'hover'),
+      getCssVar('color', 'primary-5')
+    );
+    @include set-css-var-value(
+      ('button', 'text-color', 'active'),
+      getCssVar('color', 'primary-7')
+    );
+
+    @include set-css-var-value(('button', 'bg-color'), 'transparent');
+    @include set-css-var-value(('button', 'bg-color', 'hover'), 'transparent');
+    @include set-css-var-value(('button', 'bg-color', 'active'), 'transparent');
+  }
+
   @include when(active) {
-    color: getCssVar('button', 'active', 'text-color');
-    border-color: getCssVar('button', 'active', 'border-color');
-    background-color: getCssVar('button', 'active', 'bg-color');
+    color: getCssVar('button', 'text-color', 'active');
+    border-color: getCssVar('button', 'border-color', 'active');
+    background-color: getCssVar('button', 'bg-color', 'active');
     outline: none;
   }
 
@@ -118,11 +147,23 @@ $button-icon-span-gap: map.merge(
     &,
     &:hover,
     &:focus {
-      color: getCssVar('button', 'disabled', 'text-color');
+      color: getCssVar('button', 'text-color', 'disabled');
       cursor: not-allowed;
       background-image: none;
-      background-color: getCssVar('button', 'disabled', 'bg-color');
-      border-color: getCssVar('button', 'disabled', 'border-color');
+      background-color: getCssVar('button', 'bg-color', 'disabled');
+      border-color: getCssVar('button', 'border-color', 'disabled');
+    }
+
+    &.#{$namespace}-button--text {
+      background-color: transparent;
+    }
+
+    &.is-plain {
+      &,
+      &:hover,
+      &:focus {
+        background-color: unset;
+      }
     }
   }
 
@@ -141,7 +182,8 @@ $button-icon-span-gap: map.merge(
       right: -1px;
       bottom: -1px;
       border-radius: inherit;
-      background-color: getCssVar('mask-color', 'extra-light');
+      // background-color: getCssVar('mask-color', 'extra-light');
+      background-color: rgba(255, 255, 255, 0.35);
     }
   }
   @include when(round) {
@@ -153,19 +195,21 @@ $button-icon-span-gap: map.merge(
   }
 
   @include when(text) {
-    color: getCssVar('button', 'text-color');
+    color: getCssVar('button', 'text-text-color');
     border: 0 solid transparent;
     background-color: transparent;
 
     @include when(disabled) {
-      color: getCssVar('button', 'disabled', 'text-color');
+      color: getCssVar('button', 'text-color', 'disabled');
       background-color: transparent !important;
     }
 
     &:not(.is-disabled) {
       &:hover,
       &:focus {
-        background-color: getCssVar('fill-color', 'light');
+        color: getCssVar('button', 'text-text-color', 'hover');
+        border-color: getCssVar('button', 'text-border-color', 'hover');
+        background-color: getCssVar('button', 'text-bg-color', 'hover');
       }
 
       &:focus-visible {
@@ -174,7 +218,9 @@ $button-icon-span-gap: map.merge(
       }
 
       &:active {
-        background-color: getCssVar('fill-color');
+        color: getCssVar('button', 'text-text-color', 'active');
+        border-color: getCssVar('button', 'text-border-color', 'active');
+        background-color: getCssVar('button', 'text-bg-color', 'active');
       }
 
       @include when(has-bg) {
@@ -208,11 +254,11 @@ $button-icon-span-gap: map.merge(
 
     &:hover,
     &:focus {
-      color: getCssVar('button', 'hover', 'link-text-color');
+      color: getCssVar('button', 'link-text-color', 'hover');
     }
 
     @include when(disabled) {
-      color: getCssVar('button', 'disabled', 'text-color');
+      color: getCssVar('button', 'text-color', 'disabled');
       background-color: transparent !important;
       border-color: transparent !important;
     }
@@ -239,7 +285,7 @@ $button-icon-span-gap: map.merge(
     padding-left: 0;
     padding-right: 0;
     @include when(disabled) {
-      color: getCssVar('button', 'disabled', 'text-color');
+      color: getCssVar('button', 'text-color', 'disabled');
       background-color: transparent !important;
       border-color: transparent !important;
     }
@@ -265,6 +311,37 @@ $button-icon-span-gap: map.merge(
       letter-spacing: 0.3em;
       margin-right: -0.3em;
     }
+  }
+
+  @include m(default) {
+    @include css-var-from-global(
+      ('button', 'text-color'),
+      ('color', 'primary')
+    );
+    @include css-var-from-global(
+      ('button', 'text-color', 'disabled'),
+      ('text-color', 'placeholder')
+    );
+    @include css-var-from-global(
+      ('button', 'border-color'),
+      ('color', 'primary')
+    );
+    @include css-var-from-global(
+      ('button', 'border-color', 'hover'),
+      ('color', 'primary')
+    );
+    @include css-var-from-global(
+      ('button', 'border-color', 'disabled'),
+      ('color', 'info-7')
+    );
+    @include css-var-from-global(
+      ('button', 'bg-color', 'active'),
+      ('color', 'primary-7')
+    );
+    @include css-var-from-global(
+      ('button', 'bg-color', 'disabled'),
+      ('color', 'info-7')
+    );
   }
 
   @each $type in (primary, success, warning, danger, info) {

@@ -1,17 +1,19 @@
+@use 'sass:map';
+
 @use '../mixins/mixins' as *;
 @use '../common/var' as *;
 
 @include b(picker-panel) {
   color: getCssVar('text-color', 'regular');
-  background: getCssVar('bg-color', 'overlay');
+  background: getCssVar('fill-color', '3');
   border-radius: getCssVar('border-radius-base');
   line-height: 30px;
 
   .#{$namespace}-time-panel {
     margin: 5px 0;
-    border: solid 1px getCssVar('datepicker-border-color');
-    background-color: getCssVar('bg-color', 'overlay');
-    box-shadow: getCssVar('box-shadow-light');
+    border: solid 1px map.get($datepicker, 'border-color');
+    background-color: getCssVar('fill-color', '3');
+    box-shadow: getCssVar('box-shadow', 'light');
   }
 
   @include e((body, body-wrapper)) {
@@ -24,14 +26,14 @@
 
   @include e(content) {
     position: relative;
-    margin: 15px;
+    margin: 8px 12px 12px;
   }
 
   @include e(footer) {
-    border-top: 1px solid getCssVar('datepicker-inner-border-color');
+    border-top: 1px solid map.get($datepicker, 'inner-border-color');
     padding: 4px 12px;
     text-align: right;
-    background-color: getCssVar('bg-color', 'overlay');
+    background-color: getCssVar('fill-color', '3');
     position: relative;
     font-size: 0;
   }
@@ -43,24 +45,24 @@
     background-color: transparent;
     line-height: 28px;
     font-size: 14px;
-    color: getCssVar('datepicker-text-color');
+    color: map.get($datepicker, 'text-color');
     padding-left: 12px;
     text-align: left;
     outline: none;
     cursor: pointer;
 
     &:hover {
-      color: getCssVar('datepicker-hover-text-color');
+      background-color: map.get($datepicker, 'text-color-hover');
     }
 
     &.active {
       background-color: #e6f1fe;
-      color: getCssVar('datepicker-active-color');
+      color: map.get($datepicker, 'active-color');
     }
   }
 
   @include e(btn) {
-    border: 1px solid getCssVar('fill-color', 'darker');
+    border: 1px solid #dcdcdc;
     color: getCssVar('text-color', 'primary');
     line-height: 24px;
     border-radius: 2px;
@@ -77,23 +79,23 @@
   }
 
   @include e(icon-btn) {
-    font-size: 12px;
-    color: getCssVar('datepicker-icon-color');
+    font-size: 8px;
+    color: map.get($datepicker, 'icon-color');
     border: 0;
     background: transparent;
     cursor: pointer;
     outline: none;
-    margin-top: 8px;
+    // margin-top: 8px;
 
     &:hover {
-      color: getCssVar('datepicker-hover-text-color');
+      color: map.get($datepicker, 'text-color-hover');
     }
     &:focus-visible {
-      color: getCssVar('datepicker-hover-text-color');
+      color: map.get($datepicker, 'text-color-hover');
     }
 
     @include when(disabled) {
-      color: getCssVar('text-color-disabled');
+      color: getCssVar('text-color', 'disabled');
 
       &:hover {
         cursor: not-allowed;
@@ -115,8 +117,8 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 110px;
-  border-right: 1px solid getCssVar('datepicker-inner-border-color');
+  width: 96px;
+  border-right: 1px solid map.get($datepicker, 'inner-border-color');
   box-sizing: border-box;
   padding-top: 6px;
   background-color: getCssVar('bg-color', 'overlay');
@@ -127,5 +129,5 @@
   *[slot='sidebar']
   + .#{$namespace}-picker-panel__body,
 .#{$namespace}-picker-panel__sidebar + .#{$namespace}-picker-panel__body {
-  margin-left: 110px;
+  margin-left: 96px;
 }

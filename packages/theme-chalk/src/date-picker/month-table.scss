@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use '../mixins/mixins' as *;
 @use '../common/var' as *;
 
@@ -6,13 +8,17 @@
   margin: -1px;
   border-collapse: collapse;
 
+  .#{$namespace}-picker-panel__content.is-left & {
+    border-right: 1px solid getCssVar('line-color', 'base');
+  }
+
   td {
     text-align: center;
-    padding: 8px 0;
+    padding: 8px 0 0;
     cursor: pointer;
     & div {
       height: 48px;
-      padding: 6px 0;
+      padding-top: 6px;
       box-sizing: border-box;
     }
     &.today {
@@ -27,7 +33,7 @@
     }
 
     &.disabled .cell {
-      background-color: getCssVar('fill-color', 'light');
+      background-color: getCssVar('fill-color', '4');
       cursor: not-allowed;
       color: getCssVar('text-color', 'placeholder');
 
@@ -37,22 +43,22 @@
     }
 
     .cell {
-      width: 60px;
+      width: 40px;
       height: 36px;
       display: block;
       line-height: 36px;
-      color: getCssVar('datepicker-text-color');
+      color: map.get($datepicker, 'text-color');
       margin: 0 auto;
       border-radius: 18px;
       &:hover {
-        color: getCssVar('datepicker-hover-text-color');
+        color: map.get($datepicker, 'text-color-hover');
       }
     }
 
     &.in-range div {
-      background-color: getCssVar('datepicker-inrange-bg-color');
+      background-color: map.get($datepicker, 'inrange-bg-color');
       &:hover {
-        background-color: getCssVar('datepicker-inrange-hover-bg-color');
+        background-color: map.get($datepicker, 'inrange-bg-color-hover');
       }
     }
     &.start-date div,
@@ -63,7 +69,7 @@
     &.start-date .cell,
     &.end-date .cell {
       color: $color-white;
-      background-color: getCssVar('datepicker-active-color');
+      background-color: map.get($datepicker, 'bg-color-active');
     }
 
     &.start-date div {
@@ -77,13 +83,13 @@
     }
 
     &.current:not(.disabled) .cell {
-      color: getCssVar('datepicker-active-color');
+      color: map.get($datepicker, 'text-color-active');
     }
 
     &:focus-visible {
       outline: none;
       .cell {
-        outline: 2px solid getCssVar('datepicker-active-color');
+        outline: 2px solid map.get($datepicker, 'active-color');
       }
     }
   }

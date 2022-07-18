@@ -6,31 +6,18 @@
 @use 'mixins/button' as *;
 @use 'common/var' as *;
 
-$radio-font-size: () !default;
-$radio-font-size: map.merge(
-  (
-    'large': 14px,
-    'small': 12px,
-  ),
-  $radio-font-size
-);
-
 @include b(radio) {
-  @include set-component-css-var('radio', $radio);
-}
-
-@include b(radio) {
-  color: getCssVar('radio-text-color');
-  font-weight: getCssVar('radio-font-weight');
+  color: map.get($radio, 'text-color');
+  font-weight: map.get($radio, 'font-weight');
   position: relative;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
   outline: none;
-  font-size: getCssVar('font-size', 'base');
+  font-size: map.get($radio, 'font-size');
   user-select: none;
-  margin-right: 32px;
+  margin-right: 16px;
   height: map.get($radio-height, 'default');
 
   @each $size in (large, small) {
@@ -53,7 +40,7 @@ $radio-font-size: map.merge(
 
     &.is-disabled {
       cursor: not-allowed;
-      border-color: getCssVar('border-color-lighter');
+      border-color: getCssVar('border-color-light');
     }
 
     @each $size in (large, small) {
@@ -90,13 +77,13 @@ $radio-font-size: map.merge(
 
     @include when(disabled) {
       .#{$namespace}-radio__inner {
-        background-color: map.get($radio-disabled, 'input-fill');
-        border-color: map.get($radio-disabled, 'input-border-color');
+        background-color: map.get($radio-disabled, 'input-fill-checked');
+        border-color: map.get($radio-disabled, 'input-border-color-checked');
         cursor: not-allowed;
 
         &::after {
           cursor: not-allowed;
-          background-color: map.get($radio-disabled, 'icon-color');
+          background-color: map.get($radio-disabled, 'icon-color-checked');
         }
 
         & + .#{$namespace}-radio__label {
@@ -136,30 +123,30 @@ $radio-font-size: map.merge(
 
     @include when(focus) {
       .#{$namespace}-radio__inner {
-        border-color: getCssVar('radio-input-border-color-hover');
+        border-color: map.get($radio, 'input-border-color-hover');
       }
     }
   }
   @include e(inner) {
-    border: getCssVar('radio-input-border');
-    border-radius: getCssVar('radio-input-border-radius');
-    width: getCssVar('radio-input-width');
-    height: getCssVar('radio-input-height');
-    background-color: getCssVar('radio-input-bg-color');
+    border: map.get($radio, 'input-border');
+    border-radius: map.get($radio, 'input-border-radius');
+    width: map.get($radio, 'input-width');
+    height: map.get($radio, 'input-height');
+    background-color: map.get($radio, 'input-bg-color');
     position: relative;
     cursor: pointer;
     display: inline-block;
     box-sizing: border-box;
 
     &:hover {
-      border-color: getCssVar('radio-input-border-color-hover');
+      border-color: map.get($radio, 'input-border-color-hover');
     }
 
     &::after {
       width: 4px;
       height: 4px;
-      border-radius: getCssVar('radio-input-border-radius');
-      background-color: getCssVar('color-white');
+      border-radius: map.get($radio, 'input-border-radius');
+      background-color: getCssVar('color-primary');
       content: '';
       position: absolute;
       left: 50%;
@@ -182,9 +169,9 @@ $radio-font-size: map.merge(
 
     &:focus-visible {
       & + .#{$namespace}-radio__inner {
-        outline: 2px solid getCssVar('radio-input-border-color-hover');
+        outline: 2px solid map.get($radio, 'input-border-color-hover');
         outline-offset: 1px;
-        border-radius: getCssVar('radio-input-border-radius');
+        border-radius: map.get($radio, 'input-border-radius');
       }
     }
   }
@@ -192,12 +179,12 @@ $radio-font-size: map.merge(
   &:focus:not(:focus-visible):not(.is-focus):not(:active):not(.is-disabled) {
     /*获得焦点时 样式提醒*/
     .#{$namespace}-radio__inner {
-      box-shadow: 0 0 2px 2px getCssVar('radio-input-border-color-hover');
+      box-shadow: 0 0 2px 2px map.get($radio, 'input-border-color-hover');
     }
   }
 
   @include e(label) {
-    font-size: getCssVar('radio-font-size');
+    font-size: map.get($radio, 'font-size');
     padding-left: 8px;
   }
 

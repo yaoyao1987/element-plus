@@ -9,37 +9,30 @@
   @include e(popper) {
     @include set-css-var-type('datepicker', 'border-color', $datepicker);
     @include picker-popper(
-      getCssVar('bg-color', 'overlay'),
-      1px solid getCssVar('datepicker', 'border-color'),
+      getCssVar('color-white'),
+      1px solid map.get($datepicker, 'border-color'),
       getCssVar('box-shadow', 'light')
     );
   }
 }
 
 @include b(date-editor) {
-  @include set-component-css-var('date-editor', $date-editor);
-  @include set-component-css-var('input', $input);
   position: relative;
   display: inline-block;
   text-align: left;
 
   &.#{$namespace}-input__wrapper {
-    @include inset-input-border(
-      var(
-        #{getCssVarName('input-border-color')},
-        map.get($input, 'border-color')
-      )
-    );
+    @include inset-input-border(map.get($input, 'border-color'));
 
     &:hover {
-      @include inset-input-border(#{getCssVar('input', 'hover-border-color')});
+      @include inset-input-border(#{map.get($input, 'border-color-hover')});
     }
   }
 
   &.#{$namespace}-input,
   &.#{$namespace}-input__wrapper {
-    width: getCssVar('date-editor-width');
-    height: var(#{getCssVarName('input-height')}, getCssVar('component-size'));
+    width: map.get($date-editor, 'width');
+    height: map.get($input-height, 'default');
   }
 
   @include m((monthrange)) {
@@ -104,7 +97,7 @@
     width: 39%;
     text-align: center;
     font-size: getCssVar('font-size', 'base');
-    color: getCssVar('text-color', 'regular');
+    color: getCssVar('text-color', 'primary');
     background-color: transparent;
 
     &::placeholder {
@@ -151,7 +144,7 @@
   &.#{$namespace}-input__wrapper {
     display: inline-flex;
     align-items: center;
-    padding: 0 10px;
+    padding: 3px 8px;
   }
 
   .#{$namespace}-range-input {
@@ -159,18 +152,18 @@
   }
 
   @include when(active) {
-    @include inset-input-border(#{getCssVar('input', 'focus-border-color')});
+    @include inset-input-border(#{map.get($input, 'border-color-focus')});
     &:hover {
-      @include inset-input-border(#{getCssVar('input', 'focus-border-color')});
+      @include inset-input-border(#{map.get($input, 'border-color-focus')});
     }
   }
 
   @each $size in (large, small) {
     @include m($size) {
-      line-height: getCssVar('component-size', $size);
+      line-height: map.get($input-height, $size);
 
       &.#{$namespace}-input__wrapper {
-        height: getCssVar('component-size', $size);
+        height: map.get($input-height, $size);
       }
 
       .#{$namespace}-range-separator {

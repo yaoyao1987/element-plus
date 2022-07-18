@@ -14,12 +14,12 @@
       'bg-color': (
         'color',
         $type,
-        'light-9',
+        '1',
       ),
       'border-color': (
         'color',
         $type,
-        'light-5',
+        if($type == info, '11', '6'),
       ),
     ),
     'hover': (
@@ -41,12 +41,16 @@
         'color',
         'white',
       ),
+      'border-color': (
+        'color',
+        $type,
+      ),
     ),
   );
 
   @each $type, $typeMap in $button-color-types {
     @each $typeColor, $list in $typeMap {
-      @include css-var-from-global(('button', $type, $typeColor), $list);
+      @include css-var-from-global(('button', $typeColor, $type), $list);
     }
   }
 
@@ -58,6 +62,52 @@
       color: getCssVar('color', $type, 'light-5');
       background-color: getCssVar('color', $type, 'light-9');
       border-color: getCssVar('color', $type, 'light-8');
+    }
+  }
+}
+
+@mixin button-dotted($color, $type) {
+  $button-color-types: (
+    '': (
+      'text-color': (
+        'color',
+        $type,
+      ),
+      'border-color': (
+        'color',
+        $type,
+        if($type == info, '11', '6'),
+      ),
+    ),
+    'hover': (
+      'text-color': (
+        'color',
+        $type,
+        '5',
+      ),
+      'border-color': (
+        'color',
+        $type,
+        '5',
+      ),
+    ),
+    'active': (
+      'text-color': (
+        'color',
+        $type,
+        '7',
+      ),
+      'border-color': (
+        'color',
+        $type,
+        '7',
+      ),
+    ),
+  );
+
+  @each $type, $typeMap in $button-color-types {
+    @each $typeColor, $list in $typeMap {
+      @include css-var-from-global(('button', $typeColor, $type), $list);
     }
   }
 }
@@ -101,24 +151,28 @@
       'bg-color': (
         'color',
         $type,
-        'light-3',
+        '7',
       ),
       'border-color': (
         'color',
         $type,
-        'light-3',
+        '7',
       ),
     ),
     'active': (
       'bg-color': (
         'color',
         $type,
-        'dark-2',
+        '5',
       ),
       'border-color': (
         'color',
         $type,
-        'dark-2',
+        '5',
+      ),
+      'text-color': (
+        'color',
+        'white',
       ),
     ),
     'disabled': (
@@ -141,7 +195,7 @@
 
   @each $type, $typeMap in $button-color-types {
     @each $typeColor, $list in $typeMap {
-      @include css-var-from-global(('button', $type, $typeColor), $list);
+      @include css-var-from-global(('button', $typeColor, $type), $list);
     }
   }
 
@@ -149,6 +203,10 @@
   &.is-text,
   &.is-link {
     @include button-plain($type);
+  }
+
+  &.is-dotted {
+    @include button-dotted(getCssVar('button', 'bg-color'), $type);
   }
 }
 

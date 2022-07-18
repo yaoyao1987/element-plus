@@ -48,7 +48,7 @@
   margin: 0;
   text-align: center;
   color: map.get($select-dropdown, 'empty-color');
-  font-size: getCssVar('select-font-size');
+  font-size: map.get($select, 'font-size');
 }
 
 @include b(select-dropdown__wrap) {

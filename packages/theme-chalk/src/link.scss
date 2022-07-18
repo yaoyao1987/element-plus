@@ -6,10 +6,6 @@
 @use 'common/var' as *;
 
 @include b(link) {
-  @include set-component-css-var('link', $link);
-}
-
-@include b(link) {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
@@ -20,13 +16,13 @@
   outline: none;
   cursor: pointer;
   padding: 0;
-  font-size: getCssVar('link', 'font-size');
-  font-weight: getCssVar('link', 'font-weight');
+  font-size: map.get($link, 'font-size');
+  font-weight: map.get($link, 'font-weight');
 
-  color: getCssVar('link', 'text-color');
+  color: map.get($link, 'default-text-color');
 
   &:hover {
-    color: getCssVar('link', 'hover-text-color');
+    color: map.get($link, 'default-text-color-hover');
   }
 
   @include when(underline) {
@@ -37,24 +33,29 @@
       right: 0;
       height: 0;
       bottom: 0;
-      border-bottom: 1px solid getCssVar('link', 'hover-text-color');
+      border-bottom: 1px solid map.get($link, 'default-text-color-hover');
     }
   }
 
   @include when(disabled) {
-    color: getCssVar('link', 'disabled-text-color');
+    color: map.get($link, 'text-color-disabled');
     cursor: not-allowed;
   }
 
   & [class*='#{$namespace}-icon-'] {
     & + span {
-      margin-left: 5px;
+      margin-left: 4px;
     }
   }
 
   &.#{$namespace}-link--default {
+    color: map.get($link, 'description-margin-top');
+    &:hover {
+      color: map.get($link, 'default-text-color-hover');
+    }
+
     &:after {
-      border-color: getCssVar('link', 'hover-text-color');
+      border-color: map.get($link, 'default-text-color');
     }
   }
 
@@ -66,23 +67,23 @@
 
   @each $type in $types {
     &.#{$namespace}-link--#{$type} {
-      @include css-var-from-global(('link', 'text-color'), ('color', $type));
-      @include css-var-from-global(
-        ('link', 'hover-text-color'),
-        ('color', $type, 'light-3')
-      );
-      @include css-var-from-global(
-        ('link', 'disabled-text-color'),
-        ('color', $type, 'light-5')
-      );
+      color: getCssVar('color', $type);
+
+      &:hover {
+        color: getCssVar('color', $type, #{if($type == info, 10, 5)});
+      }
 
       &:after {
-        border-color: getCssVar('link', 'text-color');
+        border-color: getCssVar('color', $type);
+      }
+
+      @include when(disabled) {
+        color: getCssVar('color', 'info-7');
       }
 
       @include when(underline) {
         &:hover:after {
-          border-color: getCssVar('link', 'text-color');
+          border-color: getCssVar('color', $type);
         }
       }
     }

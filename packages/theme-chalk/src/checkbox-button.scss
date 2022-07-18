@@ -7,30 +7,20 @@
 @use 'mixins/button' as *;
 
 @include b(checkbox-button) {
-  @include set-component-css-var('checkbox-button', $checkbox-button);
-}
-
-@include b(checkbox-button) {
   position: relative;
   display: inline-block;
 
   @include e(inner) {
     display: inline-block;
     line-height: 1;
-    font-weight: getCssVar('checkbox-font-weight');
+    font-weight: map.get($checkbox, 'font-weight');
     white-space: nowrap;
     vertical-align: middle;
     cursor: pointer;
-    background: var(
-      #{getCssVarName('button-bg-color')},
-      map.get($button, 'bg-color')
-    );
+    background: map.get($button, 'bg-color');
     border: getCssVar('border');
     border-left: 0;
-    color: var(
-      #{getCssVarName('button-text-color')},
-      map.get($button, 'text-color')
-    );
+    color: map.get($button, 'text-color');
     -webkit-appearance: none;
     text-align: center;
     box-sizing: border-box;
@@ -48,7 +38,7 @@
     );
 
     &:hover {
-      color: getCssVar('color-primary');
+      color: map.get($checkbox-button, 'text-color-hover');
     }
 
     & [class*='#{$namespace}-icon-'] {
@@ -70,36 +60,27 @@
 
   &.is-checked {
     & .#{$namespace}-checkbox-button__inner {
-      color: getCssVar('checkbox-button-checked-text-color');
-      background-color: getCssVar('checkbox-button-checked-bg-color');
-      border-color: getCssVar('checkbox-button-checked-border-color');
-      box-shadow: -1px 0 0 0 getCssVar('color-primary-light-7');
+      color: map.get($checkbox-button, 'text-color-checked');
+      background-color: map.get($checkbox-button, 'bg-color-checked');
+      border-color: map.get($checkbox-button, 'border-color-checked');
+      box-shadow: map.get($checkbox-button, 'box-shadow');
     }
     &:first-child .#{$namespace}-checkbox-button__inner {
-      border-left-color: getCssVar('checkbox-button-checked-border-color');
+      border-left-color: map.get($checkbox-button, 'border-color-checked');
     }
   }
 
   &.is-disabled {
     & .#{$namespace}-checkbox-button__inner {
-      color: getCssVar('disabled-text-color');
+      color: map.get($button, 'text-color-disabled');
       cursor: not-allowed;
       background-image: none;
-      background-color: var(
-        #{getCssVarName('button-disabled-bg-color')},
-        map.get($button, 'disabled-bg-color')
-      );
-      border-color: var(
-        #{getCssVarName('button-disabled-border-color')},
-        map.get($button, 'disabled-border-color')
-      );
+      background-color: map.get($button, 'bg-color-disabled');
+      border-color: map.get($button, 'border-color-disabled');
       box-shadow: none;
     }
     &:first-child .#{$namespace}-checkbox-button__inner {
-      border-left-color: var(
-        #{getCssVarName('button-disabled-border-color')},
-        map.get($button, 'disabled-border-color')
-      );
+      border-left-color: map.get($button, 'border-color-disabled');
     }
   }
 
@@ -114,7 +95,7 @@
 
   &.is-focus {
     & .#{$namespace}-checkbox-button__inner {
-      border-color: getCssVar('checkbox-button-checked-border-color');
+      border-color: map.get($checkbox-button, 'border-color-checked');
     }
   }
 

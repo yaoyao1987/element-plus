@@ -6,7 +6,7 @@
   height: 44px;
   font-size: 24px;
   color: #fff;
-  background-color: getCssVar('text-color', 'regular');
+  background-color: getCssVar('text-color', 'secondary');
   border-color: #fff;
 }
 
@@ -61,7 +61,7 @@
     width: 282px;
     height: 44px;
     padding: 0 23px;
-    background-color: getCssVar('text-color', 'regular');
+    background-color: getCssVar('text-color', 'secondary');
     border-color: #fff;
     border-radius: 22px;
 
